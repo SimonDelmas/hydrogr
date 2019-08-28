@@ -1,0 +1,17 @@
+python module gr4h ! in
+    interface  ! in :gr4h
+        subroutine frun_gr4h(linputs,inputsprecip,inputspe,nparam,param,nstates,statestart,noutputs,indoutputs,outputs,stateend) ! in frun_gr4h.f90
+            integer, optional,intent(in),check(len(inputsprecip)>=linputs),depend(inputsprecip) :: linputs=len(inputsprecip)
+            double precision dimension(linputs), intent(in) :: inputsprecip
+            double precision dimension(linputs), intent(in), depend(linputs) :: inputspe
+            integer, optional,intent(in),check(len(param)>=nparam),depend(param) :: nparam=len(param)
+            double precision dimension(nparam), intent(in) :: param
+            integer, optional,intent(in),check(len(statestart)>=nstates),depend(statestart) :: nstates=len(statestart)
+            double precision dimension(nstates), intent(in) :: statestart
+            integer, optional,intent(in),check(len(indoutputs)>=noutputs),depend(indoutputs) :: noutputs=len(indoutputs)
+            integer dimension(noutputs), intent(in) :: indoutputs
+            double precision dimension(linputs,noutputs), intent(inout), depend(linputs,noutputs) :: outputs
+            double precision dimension(nstates), intent(inout), depend(nstates) :: stateend
+        end subroutine frun_gr4h
+    end interface
+end python module gr4h
