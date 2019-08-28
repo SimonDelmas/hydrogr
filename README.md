@@ -1,6 +1,6 @@
-# pyGR
+# hydrogr
 
-pyGR is a python language software package for hydrological modelling, that implement several conceptual rainfall-runoff models (GR4H, GR4J, ~~GR5J~~\*, ~~GR6J~~\*, GR2M, GR1A, ~~Cemaneige~~\*).
+hydrogr is a python language software package for hydrological modelling, that implement several conceptual rainfall-runoff models (GR4H, GR4J, ~~GR5J~~\*, ~~GR6J~~\*, GR2M, GR1A, ~~Cemaneige~~\*).
 It is based on the Fortran implementation of these models, provided in the Irstea R language package: [airGR](https://cran.r-project.org/web/packages/airGR/index.html).
 
 \* Not implemented yet.
@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-pyGR requires :
+hydrogr requires :
 
 * Python 3
 * [Numpy](https://github.com/numpy/numpy) for fortran integration and array manipulation.
@@ -24,8 +24,8 @@ pyGR requires :
 To install the package, clone or download the repository and use the setup.py :
 
 ```bash
-git clone https://github.com/Simon-Delmas/pyGR.git
-cd pyGR
+git clone https://github.com/SimonDelmas/hydrogr.git
+cd hydrogr
 python ./setup.py install
 ```
 
