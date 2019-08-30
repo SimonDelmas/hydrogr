@@ -1,7 +1,6 @@
 import pytest
 import datetime
-from hydrogr.input_data import InputDataHandler
-from hydrogr.gr4j import ModelGr4j
+from hydrogr import InputDataHandler, ModelGr4j
 from numpy import sqrt, mean
 
 

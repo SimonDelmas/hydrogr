@@ -2,8 +2,7 @@ from pathlib import Path
 import datetime
 import numpy as np
 import pandas as pd
-from hydrogr.input_data import InputDataHandler
-from hydrogr.gr4j import ModelGr4j
+from hydrogr import InputDataHandler, ModelGr4j
 import spotpy
 
 # TODO : Ensure there is no nan in observation!
@@ -85,12 +84,12 @@ def main():
     spotpy_setup = SpotpySetup(df)
 
     # sampler = spotpy.algorithms.mc(spotpy_setup, dbname='MC_CMF', dbformat='csv')
-    # sampler = spotpy.algorithms.mle(spotpy_setup, dbname='MLE_CMF', dbformat='csv')
+    sampler = spotpy.algorithms.mle(spotpy_setup, dbname='MLE_CMF', dbformat='csv')
     # sampler = spotpy.algorithms.lhs(spotpy_setup, dbname='LHS_CMF', dbformat='csv')
     # sampler = spotpy.algorithms.sceua(spotpy_setup, dbname='SCEUA_CMF', dbformat='csv')
     # sampler = spotpy.algorithms.demcz(spotpy_setup, dbname='DE-MCz_CMF', dbformat='csv')
     # sampler = spotpy.algorithms.sa(spotpy_setup, dbname='SA_CMF', dbformat='csv')
-    sampler = spotpy.algorithms.rope(spotpy_setup, dbname='ROPE_CMF', dbformat='csv')
+    # sampler = spotpy.algorithms.rope(spotpy_setup, dbname='ROPE_CMF', dbformat='csv')
 
     sampler.sample(3000)
 

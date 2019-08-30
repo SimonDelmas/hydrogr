@@ -1,8 +1,7 @@
 from pathlib import Path
 import pandas as pd
 import datetime
-from hydrogr.gr4j import ModelGr4j
-from hydrogr.input_data import InputDataHandler
+from hydrogr import InputDataHandler, ModelGr4j
 from hydrogr.plot_tools import plot_hydrograph
 
 

@@ -1,6 +1,5 @@
 import datetime
-from hydrogr.input_data import InputDataHandler
-from hydrogr.gr2m import ModelGr2m
+from hydrogr import InputDataHandler, ModelGr2m
 from numpy import sqrt, mean
 import pandas as pd
 

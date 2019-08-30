@@ -24,7 +24,7 @@ class ModelGr4j(ModelGrInterface):
     n_states = 7 + 3 * 20  # Cemagref Fortran implementation reserve 7 float before unit hydrographs vectors. Seems to be the case for all model.
     output_name_list = ["PotEvap", "Precip", "Prod", "Pn", "Ps", "AE", "Perc", "PR", "Q9", "Q1", "Rout", "Exch", "AExch1", "AExch2", "AExch", "QR", "QD", "Qsim"]
 
-    def __init__(self, model_inputs, parameters, output_list=None):
+    def __init__(self, model_inputs, parameters):
         super().__init__(model_inputs, parameters)
 
     def set_parameters(self, parameters):
