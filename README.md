@@ -1,6 +1,6 @@
 # hydrogr
 
-hydrogr is a python language software package for hydrological modelling, that implement several conceptual rainfall-runoff models (GR4H, GR4J, ~~GR5J~~\*, ~~GR6J~~\*, GR2M, GR1A, ~~Cemaneige~~\*).
+hydrogr is a python language software package for hydrological modelling, that implement several conceptual rainfall-runoff models (GR4H, GR4J, GR5J, GR6J, GR2M, GR1A, ~~Cemaneige~~\*).
 It is based on the Fortran implementation of these models, provided in the Irstea R language package: [airGR](https://cran.r-project.org/web/packages/airGR/index.html).
 
 \* Not implemented yet.
