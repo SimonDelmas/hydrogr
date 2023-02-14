@@ -9,7 +9,7 @@ import pandas.api.types as ptypes
 
 class InputDataHandler(object):
     """
-    This class is an helper to ensure the the data used fit the model requirement
+    This class is an helper to ensure that the data used fit the model requirement
     in term (at least) of input time series and frequency.
     It also provide methods to manipulate the data (mainly apply function to it)
     and extract subset of data based on certain criterion (sub-period, flooding or low flow for example).
