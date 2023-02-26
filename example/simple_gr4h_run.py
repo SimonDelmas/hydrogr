@@ -2,7 +2,6 @@ from pathlib import Path
 import pandas as pd
 import datetime
 from hydrogr import InputDataHandler, ModelGr4h
-from hydrogr.plot_tools import plot_hydrograph
 
 
 if __name__ == '__main__':
@@ -22,5 +21,3 @@ if __name__ == '__main__':
     model.set_initial_conditions(production_store_filling=0.9, routing_store_filling=0.9)
     outputs = model.run()
     print(outputs.head())
-
-    plot_hydrograph(outputs, my_inputs_handler.data['flow_mm'])

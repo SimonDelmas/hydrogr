@@ -1,0 +1,17 @@
+[package]
+name = "hydrogr_rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "hydrogr_rust"
+crate-type = ["cdylib"]
+
+[package.metadata.maturin]
+name = "hydrogr._hydrogr"
+
+[dependencies]
+ndarray = "0.15.6"
+numpy = "0.18.0"
+pyo3 = { version = "0.18.0", features = ["extension-module"] }
