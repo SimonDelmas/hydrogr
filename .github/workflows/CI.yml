@@ -7,50 +7,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  # linux:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.10'
-  #     - name: Build wheels
-  #       uses: PyO3/maturin-action@v1
-  #       with:
-  #         target: ${{ matrix.target }}
-  #         args: --release --out dist --find-interpreter
-  #         manylinux: auto
-  #     - name: Upload wheels
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: wheels
-  #         path: dist
-  #     - name: pytest
-  #       if: ${{ startsWith(matrix.target, 'x86_64') }}
-  #       shell: bash
-  #       run: |
-  #         set -e
-  #         pip install hydrogr --find-links dist --force-reinstall
-  #         pip install pytest
-  #         pytest
-  #     - name: pytest
-  #       if: ${{ !startsWith(matrix.target, 'x86') && matrix.target != 'ppc64' }}
-  #       uses: uraimo/run-on-arch-action@v2.5.0)
-  #       with:
-  #         arch: ${{ matrix.target }}
-  #         distro: ubuntu22.04
-  #         githubToken: ${{ github.token }}
-  #         install: |
-  #           apt-get update
-  #           apt-get install -y --no-install-recommends python3 python3-pip
-  #           pip3 install -U pip pytest
-  #         run: |
-  #           set -e
-  #           pip3 install hydrogr --find-links dist --force-reinstall
-  #           pytest
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.target }}
+          args: --release --out dist --find-interpreter
+          manylinux: auto
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist
+      - name: pytest
+        if: ${{ startsWith(matrix.target, 'x86_64') }}
+        shell: bash
+        run: |
+          set -e
+          pip install hydrogr --find-links dist --force-reinstall
+          pip install pytest
+          pytest
+      - name: pytest
+        if: ${{ !startsWith(matrix.target, 'x86') && matrix.target != 'ppc64' }}
+        uses: uraimo/run-on-arch-action@v2.5.0)
+        with:
+          arch: ${{ matrix.target }}
+          distro: ubuntu22.04
+          githubToken: ${{ github.token }}
+          install: |
+            apt-get update
+            apt-get install -y --no-install-recommends python3 python3-pip
+            pip3 install -U pip pytest
+          run: |
+            set -e
+            pip3 install hydrogr --find-links dist --force-reinstall
+            pytest
 
   windows:
     runs-on: windows-latest
@@ -82,51 +82,51 @@ jobs:
           pip install pytest
           pytest
 
-  # macos:
-  #   runs-on: macos-latest
-  #   strategy:
-  #     matrix:
-  #       target: [x86_64, aarch64]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.10'
-  #     - name: Build wheels
-  #       uses: PyO3/maturin-action@v1
-  #       with:
-  #         target: ${{ matrix.target }}
-  #         args: --release --out dist --find-interpreter
-  #     - name: Upload wheels
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: wheels
-  #         path: dist
-  #     - name: pytest
-  #       if: ${{ !startsWith(matrix.target, 'aarch64') }}
-  #       shell: bash
-  #       run: |
-  #         set -e
-  #         pip install hydrogr --find-links dist --force-reinstall
-  #         pip install pytest
-  #         pytest
+  macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [x86_64, aarch64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.target }}
+          args: --release --out dist --find-interpreter
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist
+      - name: pytest
+        if: ${{ !startsWith(matrix.target, 'aarch64') }}
+        shell: bash
+        run: |
+          set -e
+          pip install hydrogr --find-links dist --force-reinstall
+          pip install pytest
+          pytest
 
-  # release:
-  #   name: Release
-  #   runs-on: ubuntu-latest
-  #   if: "startsWith(github.ref, 'refs/tags/')"
-  #   needs: [linux, windows, macos]
-  #   steps:
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: wheels
-  #     - name: Publish to PyPI
-  #       uses: PyO3/maturin-action@v1
-  #       env:
-  #         MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-  #       with:
-  #         command: upload
-  #         args: --skip-existing *
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: "startsWith(github.ref, 'refs/tags/')"
+    needs: [linux, windows, macos]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: wheels
+      - name: Publish to PyPI
+        uses: PyO3/maturin-action@v1
+        env:
+          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          command: upload
+          args: --skip-existing *
 
   release-github:
     permissions:
@@ -137,7 +137,7 @@ jobs:
     name: Publish to GitHub releases
     runs-on: ubuntu-latest
     if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [windows]
+    needs: [linux, windows, macos]
     steps:
       - uses: actions/download-artifact@v3
         with:
