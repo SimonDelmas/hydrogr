@@ -1,11 +1,11 @@
 [package]
-name = "hydrogr_rust"
+name = "hydrogr"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "hydrogr_rust"
+name = "hydrogr"
 crate-type = ["cdylib"]
 
 [package.metadata.maturin]
