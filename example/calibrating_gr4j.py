@@ -33,8 +33,8 @@ class CalibrationModelGR4J(object):
 
         model = ModelGr4j(self.model_inputs, [x1, x2, x3, x4])
         outputs = model.run()
-        if 'Qsim' in outputs.keys():
-            return outputs['Qsim']
+        if 'flow' in outputs.keys():
+            return outputs['flow']
         else:
             return self.data['precipitation'] * -np.inf
 
@@ -74,7 +74,7 @@ class SpotpySetup(object):
 
 
 def main():
-    data_path = Path.cwd().parent / 'data'
+    data_path = Path.cwd() / 'data'
     df = pd.read_pickle(data_path / 'L0123001.pkl')
     df.columns = ['date', 'precipitation', 'temperature', 'evapotranspiration', 'flow', 'flow_mm']
     df.index = df['date']
