@@ -2,7 +2,6 @@ from pathlib import Path
 import pandas as pd
 import datetime
 from hydrogr import InputDataHandler, ModelGr2m
-from hydrogr.plot_tools import plot_hydrograph
 
 
 if __name__ == '__main__':
@@ -33,5 +32,3 @@ if __name__ == '__main__':
 
     filtered_input = model.input_data[model.input_data.index >= start_date]
     filtered_output = outputs[outputs.index >= start_date]
-
-    plot_hydrograph(filtered_output, sub_input.data['flow_mm'])
