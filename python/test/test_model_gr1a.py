@@ -17,17 +17,17 @@ def test_model_gr1a_run(dataset_l0123001):
     df = pd.concat([precipitation, temperature, evapotranspiration, flow_mm], axis=1)
     df['date'] = df.index
 
-    input_handler = InputDataHandler(ModelGr1a, df)
+    inputs = InputDataHandler(ModelGr1a, df)
 
     warm_up_start_date = datetime.datetime(1989, 1, 1, 0, 0)
     start_date = datetime.datetime(1990, 1, 1, 0, 0)
     end_date = datetime.datetime(1999, 12, 31, 0, 0)
-    sub_input = input_handler.get_sub_period(warm_up_start_date, end_date)
+    inputs = inputs.get_sub_period(warm_up_start_date, end_date)
 
-    model = ModelGr1a(sub_input, air_gr_parameters)
-    outputs = model.run()
+    model = ModelGr1a(air_gr_parameters)
+    outputs = model.run(inputs.data)
 
-    filtered_input = model.input_data[model.input_data.index >= start_date]
+    filtered_input = inputs.data[inputs.data.index >= start_date]
     filtered_output = outputs[outputs.index >= start_date]
 
     rmse = sqrt(mean((filtered_output['flow'] - filtered_input['flow_mm'].values) ** 2.0))

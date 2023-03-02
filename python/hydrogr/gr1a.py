@@ -17,22 +17,32 @@ class ModelGr1a(ModelGrInterface):
     model = gr1a
     frequency = ['A', 'Y', 'BA', 'BY', 'AS', 'YS', 'BAS', 'BYS']
     n_param = 1
+    states_names = []
 
-    def __init__(self, model_inputs, parameters):
-        super().__init__(model_inputs, parameters)
+    def __init__(self, parameters):
+        super().__init__(parameters)
 
-    def _set_parameters(self, parameters):
-        super()._set_parameters(parameters)
+    def set_parameters(self, parameters):
+        """Set model parameters
 
-    def _set_initial_conditions(self):
+        Args:
+            parameters (list): List of one element that contain : X1 = store capacity [mm]
         """
-        GR1A model does not use initial states!
+        super().set_parameters(parameters)
+
+    def set_states(self, states):
+        """Model GR1A do not have any parameters
         """
         pass
 
-    def _run_model(self):
-        precipitation = self.input_data['precipitation'].values.astype(float)
-        evapotranspiration = self.input_data['evapotranspiration'].values.astype(float)
+    def get_states(self):
+        """Return empty dict
+        """
+        return dict()
+
+    def _run_model(self, inputs):
+        precipitation = inputs['precipitation'].values.astype(float)
+        evapotranspiration = inputs['evapotranspiration'].values.astype(float)
         flow = np.zeros(len(precipitation), dtype=float)
 
         self.model(
@@ -43,5 +53,5 @@ class ModelGr1a(ModelGrInterface):
         )
     
         results = DataFrame({"flow": flow})
-        results.index = self.input_data.index
+        results.index = inputs.index
         return results
