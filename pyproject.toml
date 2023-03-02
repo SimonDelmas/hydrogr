@@ -10,9 +10,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 
-[project.urls]
-"Homepage" = "https://github.com/SimonDelmas/hydrogr"
-
 dependencies = [
     "numpy>=1.13.3",
     "pandas>=0.20.3"
@@ -29,3 +26,6 @@ python-source = "python"
 [build-system]
 requires = ["maturin>=0.14,<0.15"]
 build-backend = "maturin"
+
+[project.urls]
+"homepage" = "https://github.com/SimonDelmas/hydrogr"
