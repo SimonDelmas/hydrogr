@@ -16,7 +16,7 @@ class ModelGr1a(ModelGrInterface):
     name = 'gr1a'
     model = gr1a
     frequency = ['A', 'Y', 'BA', 'BY', 'AS', 'YS', 'BAS', 'BYS']
-    n_param = 1
+    parameters_names = ["X1"]
     states_names = []
 
     def __init__(self, parameters):
@@ -28,7 +28,10 @@ class ModelGr1a(ModelGrInterface):
         Args:
             parameters (list): List of one element that contain : X1 = store capacity [mm]
         """
-        super().set_parameters(parameters)
+        for parameter_name in self.parameters_names:
+            if not parameter_name in parameters:
+                raise AttributeError(f"States should have a key : {parameter_name}")
+        self.parameters = parameters
 
     def set_states(self, states):
         """Model GR1A do not have any parameters
@@ -41,12 +44,13 @@ class ModelGr1a(ModelGrInterface):
         return dict()
 
     def _run_model(self, inputs):
+        parameters = [self.parameters["X1"]]
         precipitation = inputs['precipitation'].values.astype(float)
         evapotranspiration = inputs['evapotranspiration'].values.astype(float)
         flow = np.zeros(len(precipitation), dtype=float)
 
         self.model(
-            self.parameters,
+            parameters,
             precipitation,
             evapotranspiration,
             flow

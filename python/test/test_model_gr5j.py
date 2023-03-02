@@ -6,7 +6,13 @@ from numpy import sqrt, mean
 
 
 def test_model_gr5j_run(dataset_l0123001):
-    air_gr_parameters = [245.918, 1.027, 90.017, 2.198, 0.434]
+    air_gr_parameters = {
+        "X1": 245.918,
+        "X2": 1.027,
+        "X3": 90.017,
+        "X4": 2.198,
+        "X5": 0.434
+    }
     air_gr_rmse = 0.8072707
 
     inputs = InputDataHandler(ModelGr5j, dataset_l0123001)

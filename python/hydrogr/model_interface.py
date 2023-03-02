@@ -9,7 +9,7 @@ class ModelGrInterface(object, metaclass=abc.ABCMeta):
     N.B : All GR model should possess class attribute listed in __mandatory_class_properties below!
     """
 
-    __mandatory_class_properties = ['name', 'model', 'frequency', 'n_param', "states_names"]
+    __mandatory_class_properties = ['name', 'model', 'frequency', "parameters_names", "states_names"]
     input_requirements = [InputRequirements(name='precipitation', positive=True),
                           InputRequirements(name='evapotranspiration', positive=True)]
 
@@ -19,7 +19,6 @@ class ModelGrInterface(object, metaclass=abc.ABCMeta):
             if not hasattr(self, property_name):
                 raise AttributeError('All models have to possess the attribute : {}'.format(property_name))
 
-        self.parameters = None
         self.set_parameters(parameters)
     
     def run(self, inputs):
@@ -31,30 +30,36 @@ class ModelGrInterface(object, metaclass=abc.ABCMeta):
         Returns:
             pandas.Dataframe: Dataframe that contains the results of the simulation, for each timestamp in the input data.
         """
-        inputs = InputDataHandler(self, inputs)
+        inputs = InputDataHandler(self, inputs)  # To ensure input data is coherent with the model.
         return self._run_model(inputs.data)
     
+    @abc.abstractmethod
     def set_parameters(self, parameters):
         """Set the model static parameters.
 
         Args:
-            parameters (list): Value of the parameters require by the model.
-
-        Raises:
-            ValueError: If the number of given parameters do not match the number of parameters require by the model.
+            parameters (dict): Value of the parameters require by the model.
         """
-        if not isinstance(parameters, list) or len(parameters) != self.n_param:
-            raise ValueError('"parameters" should be a list of float of length {}.'.format(self.n_param))
-        self.parameters = parameters
-        
+        raise NotImplementedError('Not implemented in abstract class!')
+    
     @abc.abstractmethod
-    def set_states(self):
+    def set_states(self, states):
+        """Set the model state
+
+        Args:
+            states (dict): Dictionary that contains the model state.
+        """
         raise NotImplementedError('Not implemented in abstract class!')
     
     @abc.abstractmethod
     def get_states(self):
+        """Get model states as dict.
+
+        Returns:
+            dict: Dictionary that contains the model state.
+        """
         raise NotImplementedError('Not implemented in abstract class!')
     
     @abc.abstractmethod
-    def _run_model(self):
+    def _run_model(self, inputs):
         raise NotImplementedError('Not implemented in abstract class!')

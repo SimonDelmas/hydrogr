@@ -6,7 +6,10 @@ import pandas as pd
 
 
 def test_model_gr2m_run(dataset_l0123001):
-    air_gr_parameters = [265.072, 1.040]
+    air_gr_parameters = {
+        "X1": 265.072,
+        "X2": 1.040
+    }
     air_gr_rmse = 17.804161
 
     # One month aggregation using period as index :

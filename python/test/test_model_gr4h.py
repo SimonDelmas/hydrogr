@@ -5,7 +5,12 @@ from numpy import sqrt, mean
 
 
 def test_model_gr4h_run(dataset_l0123003):
-    air_gr_parameters = [521.113, -2.918, 218.009, 4.124]
+    air_gr_parameters = {
+        "X1": 521.113,
+        "X2": -2.918,
+        "X3": 218.009,
+        "X4": 4.124
+    }
     air_gr_rmse = 0.07847187
 
     inputs = InputDataHandler(ModelGr4h, dataset_l0123003)

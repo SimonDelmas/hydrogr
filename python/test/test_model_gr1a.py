@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def test_model_gr1a_run(dataset_l0123001):
-    air_gr_parameters = [0.840]
+    air_gr_parameters = {"X1": 0.840}
     air_gr_rmse = 64.70577504958929  # Slightly different from airGR rmse as R method for resampling return NA for 1996 observed flow...
 
     # One year aggregation :

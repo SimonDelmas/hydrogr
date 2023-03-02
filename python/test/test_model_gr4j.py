@@ -6,7 +6,12 @@ from numpy import sqrt, mean
 
 
 def test_model_gr4j_run(dataset_l0123001):
-    air_gr_parameters = [257.238, 1.012, 88.235, 2.208]
+    air_gr_parameters = {
+        "X1": 257.238,
+        "X2": 1.012,
+        "X3": 88.235,
+        "X4": 2.208
+    }
     air_gr_rmse = 0.7852326
 
     # Prepare inputs :
@@ -48,7 +53,12 @@ def test_model_gr4j_incorrect_data(dataset_l0123001):
     mask = (data.index >= start_date) & (data.index <= end_date)
     data = data.loc[mask]
     
-    parameters = [257.238, 1.012, 88.235, 2.208]
+    parameters = {
+        "X1": 257.238,
+        "X2": 1.012,
+        "X3": 88.235,
+        "X4": 2.208
+    }
     model = ModelGr4j(parameters)
     with pytest.raises(Exception) as e:
         _ = model.run(data)

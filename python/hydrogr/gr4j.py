@@ -20,7 +20,7 @@ class ModelGr4j(ModelGrInterface):
     name = 'gr4j'
     model = gr4j
     frequency = ['D', 'B', 'C']
-    n_param = 4
+    parameters_names = ["X1", "X2", "X3", "X4"]
     states_names = ["production_store", "routing_store", "uh1", "uh2"]
 
     def __init__(self, parameters):
@@ -36,30 +36,34 @@ class ModelGr4j(ModelGrInterface):
         """Set model parameters
 
         Args:
-            parameters (list): List of float of length 4 that contain :
+            parameters (dict): Dictionary that contain :
                 X1 = production store capacity [mm],
                 X2 = inter-catchment exchange coefficient [mm/d],
                 X3 = routing store capacity [mm]
                 X4 = unit hydrograph time constant [d]
         """
-        super().set_parameters(parameters)
+        for parameter_name in self.parameters_names:
+            if not parameter_name in parameters:
+                raise AttributeError(f"States should have a key : {parameter_name}")
+        self.parameters = parameters
+        
         threshold_x1x3 = 0.01
         threshold_x4 = 0.5
-        if self.parameters[0] < threshold_x1x3:
-            self.parameters[0] = threshold_x1x3
+        if self.parameters["X1"] < threshold_x1x3:
+            self.parameters["X1"] = threshold_x1x3
             warnings.warn('Production reservoir level under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x3))
-        if self.parameters[2] < threshold_x1x3:
-            self.parameters[2] = threshold_x1x3
+        if self.parameters["X3"] < threshold_x1x3:
+            self.parameters["X3"] = threshold_x1x3
             warnings.warn('Routing reservoir level under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x3))
-        if self.parameters[3] < threshold_x4:
-            self.parameters[3] = threshold_x4
+        if self.parameters["X4"] < threshold_x4:
+            self.parameters["X4"] = threshold_x4
             warnings.warn('Unit hydrograph time constant under threshold {} [d]. Will replaced by the threshold.'.format(threshold_x4))
 
     def set_states(self, states):
         """Set the model state
 
         Args:
-            states (dict): Dictionary that contains the model state.
+            states (dict): Dictionary with keys ["X1", "X2", "X3", "X4"]
         """
         for state_name in self.states_names:
             if not state_name in states:
@@ -106,15 +110,16 @@ class ModelGr4j(ModelGrInterface):
         return states
     
     def _run_model(self, inputs):
+        parameters = [self.parameters["X1"], self.parameters["X2"], self.parameters["X3"], self.parameters["X4"]]
         precipitation = inputs['precipitation'].values.astype(float)
         evapotranspiration = inputs['evapotranspiration'].values.astype(float)
         states = np.zeros(2, dtype=float)
-        states[0] = self.production_store * self.parameters[0]
-        states[1] = self.routing_store * self.parameters[2]
+        states[0] = self.production_store * self.parameters["X1"]
+        states[1] = self.routing_store * self.parameters["X3"]
         flow = np.zeros(len(precipitation), dtype=float)
 
         self.model(
-            self.parameters,
+            parameters,
             precipitation,
             evapotranspiration,
             states,
@@ -124,8 +129,8 @@ class ModelGr4j(ModelGrInterface):
         )
         
         # Update states :
-        self.production_store = states[0] / self.parameters[0]
-        self.routing_store = states[1] / self.parameters[2]
+        self.production_store = states[0] / self.parameters["X1"]
+        self.routing_store = states[1] / self.parameters["X3"]
     
         results = DataFrame({"flow": flow})
         results.index = inputs.index

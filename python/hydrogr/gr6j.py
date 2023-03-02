@@ -23,7 +23,7 @@ class ModelGr6j(ModelGrInterface):
     name = 'gr6j'
     model = gr6j
     frequency = ['D', 'B', 'C']
-    n_param = 6
+    parameters_names = ["X1", "X2", "X3", "X4", "X5", "X6"]
     states_names = ["production_store", "routing_store", "exponential_store", "uh1", "uh2"]
 
     def __init__(self, parameters):
@@ -37,32 +37,35 @@ class ModelGr6j(ModelGrInterface):
         self.uh2 = np.zeros(40, dtype=float)
 
     def set_parameters(self, parameters):
-        """
-        Set model parameters
+        """Set model parameters
 
-        :param parameters: List of float of length 4 that contain :
-                           X1 = production store capacity [mm],
-                           X2 = inter-catchment exchange coefficient [mm/d],
-                           X3 = routing store capacity [mm]
-                           X4 = unit hydrograph time constant [d]
-                           X5 = intercatchment exchange threshold [-]
-                           X6 = coefficient for emptying exponential store [mm]
+        Args:
+            parameters (dict): Dictionary that contain :
+                X1 = production store capacity [mm],
+                X2 = inter-catchment exchange coefficient [mm/d],
+                X3 = routing store capacity [mm]
+                X4 = unit hydrograph time constant [d]
+                X5 = intercatchment exchange threshold [-]
+                X6 = coefficient for emptying exponential store [mm]
         """
-        super().set_parameters(parameters)
-
+        for parameter_name in self.parameters_names:
+            if not parameter_name in parameters:
+                raise AttributeError(f"States should have a key : {parameter_name}")
+        self.parameters = parameters
+        
         threshold_x1x3x6 = 0.01
         threshold_x4 = 0.5
-        if self.parameters[0] < threshold_x1x3x6:
-            self.parameters[0] = threshold_x1x3x6
+        if self.parameters["X1"] < threshold_x1x3x6:
+            self.parameters["X1"] = threshold_x1x3x6
             warnings.warn('Production reservoir level under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x3x6))
-        if self.parameters[2] < threshold_x1x3x6:
-            self.parameters[2] = threshold_x1x3x6
+        if self.parameters["X3"] < threshold_x1x3x6:
+            self.parameters["X3"] = threshold_x1x3x6
             warnings.warn('Routing reservoir level under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x3x6))
-        if self.parameters[3] < threshold_x4:
-            self.parameters[3] = threshold_x4
+        if self.parameters["X4"] < threshold_x4:
+            self.parameters["X4"] = threshold_x4
             warnings.warn('Unit hydrograph time constant under threshold {} [d]. Will replaced by the threshold.'.format(threshold_x4))
-        if self.parameters[5] < threshold_x1x3x6:
-            self.parameters[5] = threshold_x1x3x6
+        if self.parameters["X6"] < threshold_x1x3x6:
+            self.parameters["X6"] = threshold_x1x3x6
             warnings.warn('Coefficient for emptying exponential store under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x3x6))
 
     def set_states(self, states):
@@ -124,16 +127,17 @@ class ModelGr6j(ModelGrInterface):
         return states
     
     def _run_model(self, inputs):
+        parameters = [self.parameters["X1"], self.parameters["X2"], self.parameters["X3"], self.parameters["X4"], self.parameters["X5"], self.parameters["X6"]]
         precipitation = inputs['precipitation'].values.astype(float)
         evapotranspiration = inputs['evapotranspiration'].values.astype(float)
         states = np.zeros(3, dtype=float)
-        states[0] = self.production_store * self.parameters[0]
-        states[1] = self.routing_store * self.parameters[2]
-        states[2] = self.exponential_store * self.parameters[5]
+        states[0] = self.production_store * self.parameters["X1"]
+        states[1] = self.routing_store * self.parameters["X3"]
+        states[2] = self.exponential_store * self.parameters["X6"]
         flow = np.zeros(len(precipitation), dtype=float)
 
         self.model(
-            self.parameters,
+            parameters,
             precipitation,
             evapotranspiration,
             states,
@@ -143,9 +147,9 @@ class ModelGr6j(ModelGrInterface):
         )
         
         # Update states :
-        self.production_store = states[0] / self.parameters[0]
-        self.routing_store = states[1] / self.parameters[2]
-        self.exponential_store = states[2] / self.parameters[5]
+        self.production_store = states[0] / self.parameters["X1"]
+        self.routing_store = states[1] / self.parameters["X3"]
+        self.exponential_store = states[2] / self.parameters["X6"]
     
         results = DataFrame({"flow": flow})
         results.index = inputs.index

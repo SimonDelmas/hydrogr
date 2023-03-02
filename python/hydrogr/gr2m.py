@@ -19,7 +19,7 @@ class ModelGr2m(ModelGrInterface):
     name = 'gr2m'
     model = gr2m
     frequency = ['M', 'SM', 'BM', 'CBM', 'MS', 'SMS', 'BMS', 'CBMS']
-    n_param = 2
+    parameters_names = ["X1", "X2"]
     states_names = ["production_store", "routing_store"]
 
     def __init__(self, parameters):
@@ -30,22 +30,25 @@ class ModelGr2m(ModelGrInterface):
         self.routing_store = 0.5
 
     def set_parameters(self, parameters):
-        """
-        Set model parameters
+        """Set model parameters
 
-        :param parameters: List of float of length 2 that contain :
-                           X1 = production store capacity [mm],
-                           X2 = groundwater exchange coefficient [-]
+        Args:
+            parameters (dict): Dictionary that contain :
+                X1 = production store capacity [mm],
+                X2 = groundwater exchange coefficient [-]
         """
-        super().set_parameters(parameters)
-
+        for parameter_name in self.parameters_names:
+            if not parameter_name in parameters:
+                raise AttributeError(f"States should have a key : {parameter_name}")
+        self.parameters = parameters
+        
         threshold_x1x2 = 0.01
-        if self.parameters[0] < threshold_x1x2:
-            self.parameters[0] = threshold_x1x2
+        if self.parameters["X1"] < threshold_x1x2:
+            self.parameters["X1"] = threshold_x1x2
             warnings.warn('Production reservoir level under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x2))
-        if self.parameters[1] < threshold_x1x2:
-            self.parameters[1] = threshold_x1x2
-            warnings.warn('Groundwater exchange coefficient under threshold {} [-]. Will replaced by the threshold.'.format(threshold_x1x2))
+        if self.parameters["X2"] < threshold_x1x2:
+            self.parameters["X2"] = threshold_x1x2
+            warnings.warn('Production reservoir level under threshold {} [mm]. Will replaced by the threshold.'.format(threshold_x1x2))
 
     def set_states(self, states):
         """Set the model state
@@ -84,15 +87,16 @@ class ModelGr2m(ModelGrInterface):
         return states
 
     def _run_model(self, inputs):
+        parameters = [self.parameters["X1"], self.parameters["X2"]]
         precipitation = inputs['precipitation'].values.astype(float)
         evapotranspiration = inputs['evapotranspiration'].values.astype(float)
         states = np.zeros(2, dtype=float)
-        states[0] = self.production_store * self.parameters[0]
-        states[1] = self.routing_store * self.parameters[1]
+        states[0] = self.production_store * self.parameters["X1"]
+        states[1] = self.routing_store * self.parameters["X2"]
         flow = np.zeros(len(precipitation), dtype=float)
 
         self.model(
-            self.parameters,
+            parameters,
             precipitation,
             evapotranspiration,
             states,
@@ -100,8 +104,8 @@ class ModelGr2m(ModelGrInterface):
         )
         
         # Update states :
-        self.production_store = states[0] / self.parameters[0]
-        self.routing_store = states[1] / self.parameters[1]
+        self.production_store = states[0] / self.parameters["X1"]
+        self.routing_store = states[1] / self.parameters["X2"]
     
         results = DataFrame({"flow": flow})
         results.index = inputs.index
