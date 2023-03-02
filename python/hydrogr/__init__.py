@@ -1,4 +1,4 @@
-__version__ = "0.2.0"
+__version__ = "1.0.0"
 
 from hydrogr.input_data import InputDataHandler
 from hydrogr.gr1a import ModelGr1a
