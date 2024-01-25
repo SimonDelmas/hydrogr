@@ -1,3 +1,5 @@
+name: Build
+
 on:
   push:
     branches:
@@ -95,47 +97,3 @@ jobs:
           pip install hydrogr --find-links dist --force-reinstall
           pip install pytest
           pytest
-
-  release:
-    name: Publish to Pypi
-    runs-on: ubuntu-latest
-    if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [linux, windows, macos]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: wheels
-      - name: Publish to PyPI
-        uses: PyO3/maturin-action@v1
-        env:
-          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-        with:
-          command: upload
-          args: --skip-existing *
-
-  release-github:
-    permissions:
-      # Used to sign the release's artifacts with sigstore-python.
-      id-token: write
-      # Used to upload release artifacts.
-      contents: write
-    name: Publish to GitHub releases
-    runs-on: ubuntu-latest
-    if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [linux, windows, macos]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: wheels
-      - name: Sigstore Sign
-        uses: sigstore/gh-action-sigstore-python@v1.1.0
-        with:
-          inputs: ./*.whl
-          upload-signing-artifacts: true
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            *.whl
-          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
-          generate_release_notes: true
