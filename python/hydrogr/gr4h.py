@@ -20,7 +20,7 @@ class ModelGr4h(ModelGrInterface):
 
     name = 'gr4h'
     model = gr4h
-    frequency = ['H']
+    frequency = ['H', 'h']
     parameters_names = ["X1", "X2", "X3", "X4"]
     states_names = ["production_store", "routing_store", "uh1", "uh2"]
     
