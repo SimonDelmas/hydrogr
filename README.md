@@ -3,7 +3,6 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SimonDelmas/hydrogr/CI.yml)
 ![GitHub issues](https://img.shields.io/github/issues/SimonDelmas/hydrogr)
 ![GitHub License](https://img.shields.io/github/license/SimonDelmas/hydrogr)
-![GitHub Release](https://img.shields.io/github/v/release/SimonDelmas/hydrogr)
 
 # HydroGR ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
 
