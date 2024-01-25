@@ -1,5 +1,9 @@
 # History
 
+## 1.1.0  (2024-01)
+
+Windows x86 is no more supported as Pandas do not produce wheel for this architecture : https://github.com/pandas-dev/pandas/issues/54979
+
 ## 1.0.1  (2024-01)
 
 Fix deprecated offset alias in [pandas 2.2.0](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
