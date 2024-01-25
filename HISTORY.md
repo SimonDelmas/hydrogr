@@ -1,5 +1,9 @@
 # History
 
+## 1.0.1  (2024-01)
+
+Fix deprecated offset alias in [pandas 2.2.0](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
+
 ## 1.0.0  (2023-02)
 
 Change model API to simplify the use of the package :
