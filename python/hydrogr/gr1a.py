@@ -15,7 +15,7 @@ class ModelGr1a(ModelGrInterface):
 
     name = 'gr1a'
     model = gr1a
-    frequency = ['A', 'Y', 'BA', 'BY', 'AS', 'YS', 'BAS', 'BYS']
+    frequency = ['A', 'Y', 'BA', 'BY', 'AS', 'YS', 'BAS', 'BYS', 'YE']
     parameters_names = ["X1"]
     states_names = []
 
@@ -29,7 +29,7 @@ class ModelGr1a(ModelGrInterface):
             parameters (list): List of one element that contain : X1 = store capacity [mm]
         """
         for parameter_name in self.parameters_names:
-            if not parameter_name in parameters:
+            if parameter_name not in parameters:
                 raise AttributeError(f"States should have a key : {parameter_name}")
         self.parameters = parameters
 

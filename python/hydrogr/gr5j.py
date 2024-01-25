@@ -46,7 +46,7 @@ class ModelGr5j(ModelGrInterface):
                 X5 = intercatchment exchange threshold [-]
         """
         for parameter_name in self.parameters_names:
-            if not parameter_name in parameters:
+            if parameter_name not in parameters:
                 raise AttributeError(f"States should have a key : {parameter_name}")
         self.parameters = parameters
 
@@ -69,7 +69,7 @@ class ModelGr5j(ModelGrInterface):
             states (dict): Dictionary that contains the model state.
         """
         for state_name in self.states_names:
-            if not state_name in states:
+            if state_name not in states:
                 raise AttributeError(f"States should have a key : {state_name}")
         
         if states["production_store"] is not None:

@@ -84,6 +84,7 @@ class InputDataHandler(object):
         else:
             freq = pd.infer_freq(self.data.index)
 
+        # For annual frequency pandas also return the month so we have to split the result :
         if freq.split('-')[0] in self.Model.frequency:
             return 0
         else:

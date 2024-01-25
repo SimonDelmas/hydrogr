@@ -43,7 +43,7 @@ class ModelGr4j(ModelGrInterface):
                 X4 = unit hydrograph time constant [d]
         """
         for parameter_name in self.parameters_names:
-            if not parameter_name in parameters:
+            if parameter_name not in parameters:
                 raise AttributeError(f"States should have a key : {parameter_name}")
         self.parameters = parameters
         
@@ -66,7 +66,7 @@ class ModelGr4j(ModelGrInterface):
             states (dict): Dictionary with keys ["X1", "X2", "X3", "X4"]
         """
         for state_name in self.states_names:
-            if not state_name in states:
+            if state_name not in states:
                 raise AttributeError(f"States should have a key : {state_name}")
         
         if states["production_store"] is not None:
