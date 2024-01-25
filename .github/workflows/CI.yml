@@ -97,7 +97,7 @@ jobs:
           pytest
 
   release:
-    name: Release
+    name: Publish to Pypi
     runs-on: ubuntu-latest
     if: "startsWith(github.ref, 'refs/tags/')"
     needs: [linux, windows, macos]
