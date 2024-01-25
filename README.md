@@ -1,4 +1,11 @@
-# hydrogr
+[![PyPi version](https://img.shields.io/pypi/v/hydrogr.svg)](https://pypi.python.org/pypi/hydrogr/) 
+[![](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SimonDelmas/hydrogr/CI.yml)
+![GitHub issues](https://img.shields.io/github/issues/SimonDelmas/hydrogr)
+![GitHub License](https://img.shields.io/github/license/SimonDelmas/hydrogr)
+![GitHub Release](https://img.shields.io/github/v/release/SimonDelmas/hydrogr)
+
+# HydroGR ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
 
 Hydrogr is a python language software package for hydrological modelling, that implement several conceptual rainfall-runoff models (GR4H, GR4J, GR5J, GR6J, GR2M, GR1A).
 It is inspired from Irstea R language package: [airGR](https://cran.r-project.org/web/packages/airGR/index.html).
@@ -22,11 +29,12 @@ print(hydrogr.__version__)
 
 ### Examples
 
-Examples based on the examples in the airGR package are available in the example folder for the different models.
+Examples based on the examples in the airGR package are available in the [example folder](https://github.com/SimonDelmas/hydrogr/tree/master/example) for the different models.
 
 An example for calibrating models using [spotpy](https://github.com/thouska/spotpy) is also available.
 
-<img src="https://user-images.githubusercontent.com/54593457/63867945-0795cf00-c9b6-11e9-9fef-18c0fc564d3e.png" alt="GR4H example" width="600   "/>
+![gr4h](https://github.com/SimonDelmas/hydrogr/assets/28869386/3c980461-42d7-4de9-bae7-6bb127c978f1)
+
 
 ## License
 
