@@ -1,8 +1,6 @@
 use pyo3::prelude::*;
-use pyo3::types::{PyList};
-use numpy::{
-    PyArray1,
-};
+use pyo3::types::PyList;
+use numpy::PyArray1;
 
 mod s_curves;
 mod gr1a;
@@ -11,9 +9,6 @@ mod gr4j;
 mod gr5j;
 mod gr6j;
 mod gr4h;
-
-#[cfg(test)]
-mod tests;
 
 // https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/
 // https://itnext.io/how-to-bind-python-numpy-with-rust-ndarray-2efa5717ed21

@@ -86,3 +86,34 @@ pub fn gr4h(parameters: &Vec<f64>, rainfall: &mut ArrayViewMut1<'_, f64>, evapot
         flow[t] = rout_flow + direct_flow;
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    extern crate ndarray;
+    use ndarray::Array1;
+
+    #[test]
+    fn test_gr4h() {
+        let input_len = 10;
+
+        let parameters = vec![200.0, 1.0, 100.0, 2.0];
+        let states = vec![0., 0.];
+        let mut states = Array1::<f64>::from_vec(states);
+        let rainfall = vec![0., 0., 0., 10., 10., 10., 10., 0., 0., 0.];
+        let evapotranspiration = vec![0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1];
+        let mut rainfall = Array1::<f64>::from_vec(rainfall);
+        let mut evapotranspiration = Array1::<f64>::from_vec(evapotranspiration);
+        let mut flow = Array1::<f64>::zeros(input_len);
+        let mut uh1 = Array1::<f64>::zeros(20);
+        let mut uh2 = Array1::<f64>::zeros(40);
+
+        gr4h(&parameters, &mut rainfall.view_mut(), &mut evapotranspiration.view_mut(), &mut states.view_mut(), &mut uh1.view_mut(), &mut uh2.view_mut(), &mut flow.view_mut());
+
+        let ref_flow = vec![0.0, 0.0, 0.0, 0.00016981750514207867, 0.0014188328018795034, 0.0050621281264912315, 0.012368862852729453, 0.01408289101187942, 0.011689660613822294, 0.006163451427650927];
+        for i in 0..10 {
+            assert_eq!(flow[i], ref_flow[i]);
+        }
+    }
+}

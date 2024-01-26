@@ -89,7 +89,7 @@ pub fn gr6j(parameters: &Vec<f64>, rainfall: &mut ArrayViewMut1<'_, f64>, evapot
         if ar > 33. {ar = 33.;}
         if ar < -33. {ar = -33.;}
 
-        let mut exp_flow: f64 = 0.;
+        let exp_flow: f64;
         if ar > 7. {
             exp_flow = states[2] + x6 / ar.exp();
         }
