@@ -34,7 +34,6 @@ An example for calibrating models using [spotpy](https://github.com/thouska/spot
 
 ![gr4h](https://github.com/SimonDelmas/hydrogr/assets/28869386/3c980461-42d7-4de9-bae7-6bb127c978f1)
 
-
 ## License
 
 This project is licensed under the GLP-2.0 License - see the [LICENSE.md](LICENSE.md) file for details.

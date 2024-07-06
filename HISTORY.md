@@ -1,5 +1,10 @@
 # History
 
+## 1.2.0 (2024-07)
+
+Technical change : avoid using unsafe as_array_mut. Function now return a new array instead of modifying the existing one.
+This should simplify retrieving of intermediate states.
+
 ## 1.1.0  (2024-01)
 
 Windows x86 is no more supported as Pandas do not produce wheel for this architecture : https://github.com/pandas-dev/pandas/issues/54979
