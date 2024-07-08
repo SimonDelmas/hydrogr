@@ -1,3 +1,4 @@
+from typing import Dict, Any
 import warnings
 import numpy as np
 from pandas import DataFrame
@@ -6,16 +7,39 @@ from hydrogr._hydrogr import gr4h
 
 
 class ModelGr4h(ModelGrInterface):
-    """
-    GR4H model implementation based on fortran function from IRSTEA package airGR :
-    https://cran.r-project.org/web/packages/airGR/index.html
+    """GR4H model inspired by IRSTEA airGR package.
 
-    :param model_inputs: Input data handler, should contain precipitation and evapotranspiration time series
-    :param parameters: List of float of length 4 that contain :
-                       X1 = production store capacity [mm],
-                       X2 = inter-catchment exchange coefficient [mm/h],
-                       X3 = routing store capacity [mm]
-                       X4 = unit hydrograph time constant [h]
+    Note:
+        Model parameters :
+            X1 : production store capacity [mm].
+            X2 : inter-catchment exchange coefficient [mm/h].
+            X3 : routing store capacity [mm].
+            X4 : unit hydrograph time constant [h].
+        Model states :
+            production_store : Production store capacity [mm].
+            routing_store : Routing store capacity [mm].
+            uh1 : unit hydrograph uh1 [m3/s].
+            uh2 : unit hydrograph uh2 [m3/s].
+
+    Attributes:
+        production_store (float) : Production store capacity [mm].
+        routing_store (float) : Routing store capacity [mm].
+        uh1 (NDArray[Any]) : unit hydrograph uh1 [m3/s].
+        uh2 (NDArray[Any]) : unit hydrograph uh2 [m3/s].
+        parameters (Dict[str, float]) : Parameters of the model.
+
+    Args:
+        parameters (Dict[str, float]): Model parameters.
+
+    Methods:
+        run(inputs):
+            Run the model over the period of the input data.
+        set_parameters(parameters):
+            Set model parameters.
+        set_states(states):
+            Set model states.
+        get_states():
+            Get model states.
     """
 
     name = "gr4h"
@@ -24,7 +48,16 @@ class ModelGr4h(ModelGrInterface):
     parameters_names = ["X1", "X2", "X3", "X4"]
     states_names = ["production_store", "routing_store", "uh1", "uh2"]
 
-    def __init__(self, parameters):
+    def __init__(self, parameters: Dict[str, float]):
+        """Constructs an ModelGr4h object.
+
+        Args:
+            parameters (Dict[str, float]): Value of the parameters require by the model:
+                X1 = production store capacity [mm],
+                X2 = inter-catchment exchange coefficient [mm/h],
+                X3 = routing store capacity [mm]
+                X4 = unit hydrograph time constant [h]
+        """
         super().__init__(parameters)
 
         # Default states values
@@ -33,15 +66,15 @@ class ModelGr4h(ModelGrInterface):
         self.uh1 = np.zeros(20 * 24, dtype=float)
         self.uh2 = np.zeros(40 * 24, dtype=float)
 
-    def set_parameters(self, parameters):
-        """
-        Set model parameters
+    def set_parameters(self, parameters: Dict[str, float]):
+        """Set model parameters.
 
-        :param parameters: List of float of length 4 that contain :
-                           X1 = production store capacity [mm],
-                           X2 = inter-catchment exchange coefficient [mm/h],
-                           X3 = routing store capacity [mm]
-                           X4 = unit hydrograph time constant [h]
+        Args:
+            parameters (Dict[str, float]): Value of the parameters require by the model :
+                X1 = production store capacity [mm],
+                X2 = inter-catchment exchange coefficient [mm/h],
+                X3 = routing store capacity [mm]
+                X4 = unit hydrograph time constant [h]
         """
         for parameter_name in self.parameters_names:
             if parameter_name not in parameters:
@@ -72,11 +105,15 @@ class ModelGr4h(ModelGrInterface):
                 )
             )
 
-    def set_states(self, states):
-        """Set the model state
+    def set_states(self, states: Dict[str, Any]):
+        """Set the model state.
 
         Args:
-            states (dict): Dictionary that contains the model state.
+            states (Dict[str, Any]): Dictionary that contains the model state :
+                production_store : Production store capacity [mm].
+                routing_store : Routing store capacity [mm].
+                uh1 : unit hydrograph uh1 [m3/s].
+                uh2 : unit hydrograph uh2 [m3/s].
         """
         for state_name in self.states_names:
             if state_name not in states:
@@ -108,11 +145,15 @@ class ModelGr4h(ModelGrInterface):
         else:
             self.uh2 = np.zeros(40 * 24, dtype=float)
 
-    def get_states(self):
+    def get_states(self) -> Dict[str, Any]:
         """Get model states as dict.
 
         Returns:
-            dict: With keys : ["production_store", "routing_store", "uh1", "uh2"]
+            Dict[str, Any]: With keys :
+                production_store : Production store capacity [mm].
+                routing_store : Routing store capacity [mm].
+                uh1 : unit hydrograph uh1 [m3/s].
+                uh2 : unit hydrograph uh2 [m3/s].
         """
         states = {
             "production_store": self.production_store,
@@ -122,7 +163,15 @@ class ModelGr4h(ModelGrInterface):
         }
         return states
 
-    def _run_model(self, inputs):
+    def _run_model(self, inputs: DataFrame) -> DataFrame:
+        """Run the model.
+
+        Args:
+            inputs (DataFrame): Input data handler, should contain precipitation and evapotranspiration time series.
+
+        Returns:
+            DataFrame: Dataframe that contains the flow time series [m3/s].
+        """
         precipitation = inputs["precipitation"].values.astype(float)
         evapotranspiration = inputs["evapotranspiration"].values.astype(float)
         parameters = [

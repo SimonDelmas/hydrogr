@@ -1,3 +1,4 @@
+from typing import Dict, Any
 import warnings
 import numpy as np
 from pandas import DataFrame
@@ -6,18 +7,43 @@ from hydrogr._hydrogr import gr6j
 
 
 class ModelGr6j(ModelGrInterface):
-    """
-    GR6J model implementation based on fortran function from IRSTEA package airGR :
-    https://cran.r-project.org/web/packages/airGR/index.html
+    """GR6J model inspired by IRSTEA airGR package.
 
-    :param model_inputs: Input data handler, should contain precipitation and evapotranspiration time series
-    :param parameters: List of float of length 4 that contain :
-                       X1 = production store capacity [mm],
-                       X2 = inter-catchment exchange coefficient [mm/d],
-                       X3 = routing store capacity [mm]
-                       X4 = unit hydrograph time constant [d]
-                       X5 = intercatchment exchange threshold [-]
-                       X6 = coefficient for emptying exponential store [mm]
+    Note:
+        Model parameters :
+            X1 : production store capacity [mm].
+            X2 : inter-catchment exchange coefficient [mm/d].
+            X3 : routing store capacity [mm].
+            X4 : unit hydrograph time constant [d].
+            X5 = intercatchment exchange threshold [-]
+            X6 = coefficient for emptying exponential store [mm]
+        Model states :
+            production_store : Production store capacity [mm].
+            routing_store : Routing store capacity [mm].
+            exponential_store : Exponential store capacity [mm].
+            uh1 : unit hydrograph uh1 [m3/s].
+            uh2 : unit hydrograph uh2 [m3/s].
+
+    Attributes:
+        production_store (float) : Production store capacity [mm].
+        routing_store (float) : Routing store capacity [mm].
+        exponential_store : Exponential store capacity [mm].
+        uh1 (NDArray[Any]) : unit hydrograph uh1 [m3/s].
+        uh2 (NDArray[Any]) : unit hydrograph uh2 [m3/s].
+        parameters (Dict[str, float]) : Parameters of the model.
+
+    Args:
+        parameters (Dict[str, float]): Model parameters.
+
+    Methods:
+        run(inputs):
+            Run the model over the period of the input data.
+        set_parameters(parameters):
+            Set model parameters.
+        set_states(states):
+            Set model states.
+        get_states():
+            Get model states.
     """
 
     name = "gr6j"
@@ -32,7 +58,18 @@ class ModelGr6j(ModelGrInterface):
         "uh2",
     ]
 
-    def __init__(self, parameters):
+    def __init__(self, parameters: Dict[str, float]):
+        """Set model parameters
+
+        Args:
+            parameters (Dict[str, float]): Dictionary that contain :
+                X1 = production store capacity [mm],
+                X2 = inter-catchment exchange coefficient [mm/d],
+                X3 = routing store capacity [mm]
+                X4 = unit hydrograph time constant [d]
+                X5 = intercatchment exchange threshold [-]
+                X6 = coefficient for emptying exponential store [mm]
+        """
         super().__init__(parameters)
 
         # Default states values
@@ -42,11 +79,11 @@ class ModelGr6j(ModelGrInterface):
         self.uh1 = np.zeros(20, dtype=float)
         self.uh2 = np.zeros(40, dtype=float)
 
-    def set_parameters(self, parameters):
+    def set_parameters(self, parameters: Dict[str, float]):
         """Set model parameters
 
         Args:
-            parameters (dict): Dictionary that contain :
+            parameters (Dict[str, float]): Dictionary that contain :
                 X1 = production store capacity [mm],
                 X2 = inter-catchment exchange coefficient [mm/d],
                 X3 = routing store capacity [mm]
@@ -90,11 +127,16 @@ class ModelGr6j(ModelGrInterface):
                 )
             )
 
-    def set_states(self, states):
-        """Set the model state
+    def set_states(self, states: Dict[str, Any]):
+        """Set the model state.
 
         Args:
-            states (dict): Dictionary that contains the model state.
+            states (Dict[str, Any]): Dictionary that contains the model state :
+                production_store : Production store capacity [mm].
+                routing_store : Routing store capacity [mm].
+                exponential_store : Exponential store capacity [mm].
+                uh1 : unit hydrograph uh1 [m3/s].
+                uh2 : unit hydrograph uh2 [m3/s].
         """
         for state_name in self.states_names:
             if state_name not in states:
@@ -133,11 +175,16 @@ class ModelGr6j(ModelGrInterface):
         else:
             self.uh2 = np.zeros(40, dtype=float)
 
-    def get_states(self):
+    def get_states(self) -> Dict[str, Any]:
         """Get model states as dict.
 
         Returns:
-            dict: With keys : ["production_store", "routing_store", "exponential_store", "uh1", "uh2"]
+            Dict[str, Any]: With keys :
+                production_store : Production store capacity [mm].
+                routing_store : Routing store capacity [mm].
+                exponential_store : Exponential store capacity [mm].
+                uh1 : unit hydrograph uh1 [m3/s].
+                uh2 : unit hydrograph uh2 [m3/s].
         """
         states = {
             "production_store": self.production_store,
@@ -148,7 +195,15 @@ class ModelGr6j(ModelGrInterface):
         }
         return states
 
-    def _run_model(self, inputs):
+    def _run_model(self, inputs: DataFrame) -> DataFrame:
+        """Run the model.
+
+        Args:
+            inputs (DataFrame): Input data handler, should contain precipitation and evapotranspiration time series.
+
+        Returns:
+            DataFrame: Dataframe that contains the flow time series [m3/s].
+        """
         parameters = [
             self.parameters["X1"],
             self.parameters["X2"],

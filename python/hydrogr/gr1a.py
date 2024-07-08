@@ -1,16 +1,28 @@
+from typing import Dict, Any
 from hydrogr.model_interface import ModelGrInterface
 from hydrogr._hydrogr import gr1a
-import numpy as np
 from pandas import DataFrame
 
 
 class ModelGr1a(ModelGrInterface):
-    """
-    GR1A model implementation based on fortran function from IRSTEA package airGR :
-    https://cran.r-project.org/web/packages/airGR/index.html
+    """GR1A model inspired by IRSTEA airGR package.
 
-    :param model_inputs: InputDataHandler, should contain precipitation and evapotranspiration time series
-    :param parameters: List of float of length 1 that contain GR1A unique and dimensionless parameter
+    Note:
+        Model parameters :
+            X1 : GR1A unique and dimensionless parameter.
+
+    Attributes:
+        parameter_name (Dict[str, float]) : Parameter of the model:
+            X1, GR1A unique and dimensionless parameter.
+
+    Args:
+        parameters (Dict[str, float]): Should define X1, GR1A unique and dimensionless parameter.
+
+    Methods:
+        run(inputs):
+            Run the model over the period of the input data.
+        set_parameters(parameters):
+            Set model parameters.
     """
 
     name = "gr1a"
@@ -20,28 +32,43 @@ class ModelGr1a(ModelGrInterface):
     states_names = []
 
     def __init__(self, parameters):
-        super().__init__(parameters)
-
-    def set_parameters(self, parameters):
-        """Set model parameters
+        """Constructs an ModelGr1a object.
 
         Args:
-            parameters (list): List of one element that contain : X1 = store capacity [mm]
+            parameters (Dict[str, float]): Value of the parameters require by the model:
+                X1 = GR1A unique and dimensionless parameter.
+        """
+        super().__init__(parameters)
+
+    def set_parameters(self, parameters: Dict[str, float]):
+        """Set model parameters.
+
+        Args:
+            parameters (Dict[str, float]): Value of the parameters require by the model :
+                X1 = GR1A unique and dimensionless parameter.
         """
         for parameter_name in self.parameters_names:
             if parameter_name not in parameters:
                 raise AttributeError(f"States should have a key : {parameter_name}")
         self.parameters = parameters
 
-    def set_states(self, states):
+    def set_states(self, states: Dict[str, Any]):
         """Model GR1A do not have any parameters"""
         pass
 
-    def get_states(self):
+    def get_states(self) -> Dict[str, Any]:
         """Return empty dict"""
         return dict()
 
-    def _run_model(self, inputs):
+    def _run_model(self, inputs: DataFrame) -> DataFrame:
+        """Run the model.
+
+        Args:
+            inputs (DataFrame): Input data handler, should contain precipitation and evapotranspiration time series.
+
+        Returns:
+            DataFrame: Dataframe that contains the flow time series [m3/s].
+        """
         parameters = [self.parameters["X1"]]
         precipitation = inputs["precipitation"].values.astype(float)
         evapotranspiration = inputs["evapotranspiration"].values.astype(float)

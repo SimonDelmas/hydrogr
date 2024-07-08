@@ -1,3 +1,4 @@
+from typing import Dict
 import warnings
 import numpy as np
 from pandas import DataFrame
@@ -6,14 +7,33 @@ from hydrogr._hydrogr import gr2m
 
 
 class ModelGr2m(ModelGrInterface):
-    """
-    GR2M model implementation based on fortran function from IRSTEA package airGR :
-    https://cran.r-project.org/web/packages/airGR/index.html
+    """GR2M model inspired by IRSTEA airGR package.
 
-        :param model_inputs: Input data handler, should contain precipitation and evapotranspiration time series
-        :param parameters: List of float of length 2 that contain :
-                           X1 = production store capacity [mm],
-                           X2 = groundwater exchange coefficient [-]
+    Note:
+        Model parameters :
+            X1 = production store capacity [mm],
+            X2 = groundwater exchange coefficient [-]
+        Model states :
+            production_store : Production store capacity [mm].
+            routing_store : Routing store capacity [mm].
+
+    Attributes:
+        production_store (float) : Production store capacity [mm].
+        routing_store (float) : Routing store capacity [mm].
+        parameters (Dict[str, float]) : Parameters of the model.
+
+    Args:
+        parameters (Dict[str, float]): Model parameters.
+
+    Methods:
+        run(inputs):
+            Run the model over the period of the input data.
+        set_parameters(parameters):
+            Set model parameters.
+        set_states(states):
+            Set model states.
+        get_states():
+            Get model states.
     """
 
     name = "gr2m"
@@ -22,15 +42,15 @@ class ModelGr2m(ModelGrInterface):
     parameters_names = ["X1", "X2"]
     states_names = ["production_store", "routing_store"]
 
-    def __init__(self, parameters):
+    def __init__(self, parameters: Dict[str, float]):
         super().__init__(parameters)
 
         # Default states values
         self.production_store = 0.3
         self.routing_store = 0.5
 
-    def set_parameters(self, parameters):
-        """Set model parameters
+    def set_parameters(self, parameters: Dict[str, float]):
+        """Set model parameters.
 
         Args:
             parameters (dict): Dictionary that contain :
@@ -58,11 +78,13 @@ class ModelGr2m(ModelGrInterface):
                 )
             )
 
-    def set_states(self, states):
+    def set_states(self, states: Dict[str, float]):
         """Set the model state
 
         Args:
-            states (dict): Dictionary that contains the model state.
+            states (Dict[str, float]): Dictionary that contains the model state :
+                production_store (float) : Production store capacity [mm].
+                routing_store (float) : Routing store capacity [mm].
         """
         for state_name in self.states_names:
             if state_name not in states:
@@ -82,11 +104,13 @@ class ModelGr2m(ModelGrInterface):
         else:
             self.routing_store = 0.5
 
-    def get_states(self):
+    def get_states(self) -> Dict[str, float]:
         """Get model states as dict.
 
         Returns:
-            dict: With keys : ["production_store", "routing_store"]
+            Dict[str, float]: Dictionary that contains the model state :
+                production_store (float) : Production store capacity [mm].
+                routing_store (float) : Routing store capacity [mm].
         """
         states = {
             "production_store": self.production_store,
@@ -94,7 +118,15 @@ class ModelGr2m(ModelGrInterface):
         }
         return states
 
-    def _run_model(self, inputs):
+    def _run_model(self, inputs: DataFrame) -> DataFrame:
+        """Run the model.
+
+        Args:
+            inputs (DataFrame): Input data handler, should contain precipitation and evapotranspiration time series.
+
+        Returns:
+            DataFrame: Dataframe that contains the flow time series [m3/s].
+        """
         parameters = [self.parameters["X1"], self.parameters["X2"]]
         precipitation = inputs["precipitation"].values.astype(float)
         evapotranspiration = inputs["evapotranspiration"].values.astype(float)
