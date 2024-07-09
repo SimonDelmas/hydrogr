@@ -82,8 +82,8 @@ class InputDataHandler(object):
         Check input data type and frequency. Also checks the data prerequisites, defined in the models.
         """
         if not (
-            ptypes.is_datetime64_any_dtype(self.data.index)
-            or ptypes.is_period_dtype(self.data.index)
+            isinstance(self.data.index, pd.DatetimeIndex)
+            or isinstance(self.data.index, pd.PeriodIndex)
         ):
             raise TypeError(
                 "Input data index should be datetime or period object. Received : {} instead.".format(
@@ -91,7 +91,7 @@ class InputDataHandler(object):
                 )
             )
 
-        if ptypes.is_period_dtype(self.data.index):
+        if isinstance(self.data.index, pd.PeriodIndex):
             self.data.index = self.data.index.to_timestamp()
 
         for prerequisite in self.Model.input_requirements:

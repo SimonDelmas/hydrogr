@@ -10,12 +10,12 @@ def test_model_gr1a_run(dataset_l0123001):
     air_gr_rmse = 64.70577504958929  # Slightly different from airGR rmse as R method for resampling return NA for 1996 observed flow...
 
     # One year aggregation :
-    precipitation = dataset_l0123001['precipitation'].resample('A').sum()
-    temperature = dataset_l0123001['temperature'].resample('A').mean()
-    evapotranspiration = dataset_l0123001['evapotranspiration'].resample('A').sum()
-    flow_mm = dataset_l0123001['flow_mm'].resample('A').sum()
+    precipitation = dataset_l0123001["precipitation"].resample("YE").sum()
+    temperature = dataset_l0123001["temperature"].resample("YE").mean()
+    evapotranspiration = dataset_l0123001["evapotranspiration"].resample("YE").sum()
+    flow_mm = dataset_l0123001["flow_mm"].resample("YE").sum()
     df = pd.concat([precipitation, temperature, evapotranspiration, flow_mm], axis=1)
-    df['date'] = df.index
+    df["date"] = df.index
 
     inputs = InputDataHandler(ModelGr1a, df)
 
@@ -30,5 +30,7 @@ def test_model_gr1a_run(dataset_l0123001):
     filtered_input = inputs.data[inputs.data.index >= start_date]
     filtered_output = outputs[outputs.index >= start_date]
 
-    rmse = sqrt(mean((filtered_output['flow'] - filtered_input['flow_mm'].values) ** 2.0))
+    rmse = sqrt(
+        mean((filtered_output["flow"] - filtered_input["flow_mm"].values) ** 2.0)
+    )
     assert round(rmse, 5) == round(air_gr_rmse, 5)

@@ -6,19 +6,17 @@ import pandas as pd
 
 
 def test_model_gr2m_run(dataset_l0123001):
-    air_gr_parameters = {
-        "X1": 265.072,
-        "X2": 1.040
-    }
+    air_gr_parameters = {"X1": 265.072, "X2": 1.040}
     air_gr_rmse = 17.804161
 
     # One month aggregation using period as index :
-    precipitation = dataset_l0123001['precipitation'].resample('M', kind='period').sum()
-    temperature = dataset_l0123001['temperature'].resample('M', kind='period').mean()
-    evapotranspiration = dataset_l0123001['evapotranspiration'].resample('m', kind='period').sum()
-    flow_mm = dataset_l0123001['flow_mm'].resample('M', kind='period').sum()
+    precipitation = dataset_l0123001["precipitation"].resample("ME").sum()
+    temperature = dataset_l0123001["temperature"].resample("ME").mean()
+    evapotranspiration = dataset_l0123001["evapotranspiration"].resample("ME").sum()
+    flow_mm = dataset_l0123001["flow_mm"].resample("ME").sum()
     df = pd.concat([precipitation, temperature, evapotranspiration, flow_mm], axis=1)
-    df['date'] = df.index
+    df.index = df.index.to_period("M")
+    df["date"] = df.index
 
     inputs = InputDataHandler(ModelGr2m, df)
 
@@ -33,5 +31,7 @@ def test_model_gr2m_run(dataset_l0123001):
     filtered_input = inputs.data[inputs.data.index >= start_date]
     filtered_output = outputs[outputs.index >= start_date]
 
-    rmse = sqrt(mean((filtered_output['flow'] - filtered_input['flow_mm'].values) ** 2.0))
+    rmse = sqrt(
+        mean((filtered_output["flow"] - filtered_input["flow_mm"].values) ** 2.0)
+    )
     assert round(rmse, 6) == round(air_gr_rmse, 6)
