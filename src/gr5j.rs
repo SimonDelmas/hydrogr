@@ -28,10 +28,6 @@ pub fn gr5j(
     for i in 1..nuh2 + 1 {
         o_uh2[i - 1] = s_curves2(i, x4, exp) - s_curves2(i - 1, x4, exp);
     }
-    // println!("{:?}", o_uh1);
-    // println!("{:?}", o_uh2);
-    // [0.13803916620160606, 0.6428282777223341, 0.21913255607605986]
-    // [0.06901958310080303, 0.32141413886116704, 0.44489021900358455, 0.15697224734804904, 0.0077038116863963335]
 
     // Main loop :
     let iter = rainfall.iter().zip(evapotranspiration.iter());

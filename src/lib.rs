@@ -10,10 +10,6 @@ mod gr5j;
 mod gr6j;
 mod s_curves;
 
-// https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/
-// https://itnext.io/how-to-bind-python-numpy-with-rust-ndarray-2efa5717ed21
-// https://medium.com/@MatthieuL49/a-mixed-rust-python-project-24491e2af424 => For test and maturin
-
 #[pyfunction]
 #[pyo3(name = "gr1a")]
 fn gr1a_py<'py>(

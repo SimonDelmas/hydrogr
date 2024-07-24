@@ -73,7 +73,6 @@ pub fn gr4h(
         // Production store percolation :
         let psf_p4 = (states[0] / x1).powf(4.0);
         let percolation = states[0] * (1.0 - 1.0 / (1.0 + psf_p4 / 759.69140625).powf(0.25));
-        // let percolation = states[0] * (1.0 - 1.0 / (1.0 + psf_p4 / 25.62891).powf(0.25));
         states[0] -= percolation;
         rout_input += percolation;
 
