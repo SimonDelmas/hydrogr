@@ -8,9 +8,6 @@ edition = "2021"
 name = "hydrogr"
 crate-type = ["cdylib"]
 
-[package.metadata.maturin]
-name = "hydrogr._hydrogr"
-
 [dependencies]
 ndarray = "0.15.6"
 numpy = "0.18.0"

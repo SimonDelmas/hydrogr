@@ -29,6 +29,11 @@ Finally to install [Maturin](https://github.com/PyO3/maturin) do
 pipx install maturin
 ```
 
+### (Optional) Rye
+
+We recommend using [Rye](https://rye.astral.sh/) to manage the project.
+Simply install the software by following the instruction and refers to the [rust module](https://rye.astral.sh/guide/rust/) section for building the project.
+
 ## Edit the project
 
 ### Get the project
@@ -37,7 +42,19 @@ pipx install maturin
 git clone https://github.com/SimonDelmas/hydrogr.git
 ```
 
-### Virtual environment
+### Using Rye
+
+Simply do :
+
+```bash
+rye sync
+```
+
+You still can use `maturin.exe develop` for Rust module development.
+
+### Without Rye
+
+#### Virtual environment
 
 Create a virtual environnement. I recommend to create it into the project directory so Maturin can find it easily. For example :
 
@@ -46,7 +63,7 @@ cd hydrogr
 py.exe -m venv .venv
 ```
 
-### Development install
+#### Development install
 
 Simply do :
 
@@ -69,6 +86,12 @@ This will install the python package and its dependencies in editable mode in th
 - Test with pytest : `.venv\Scripts\pytest.exe`
 
 ## Compiling
+
+If you are using *Rye* :
+
+`rye build`
+
+Else :
 
 `maturin.exe build --release --out dist --find-interpreter`
 
