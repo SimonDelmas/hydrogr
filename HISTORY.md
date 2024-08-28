@@ -1,5 +1,9 @@
 # History
 
+## 1.2.1 (2024-08)
+
+Fix GR6J exponential store flow (issue #2), thanks to @Dr-Jamie-Brown
+
 ## 1.2.0 (2024-07)
 
 Technical change : avoid using unsafe as_array_mut. Function now return a new array instead of modifying the existing one.
