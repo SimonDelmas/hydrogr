@@ -112,7 +112,7 @@ pub fn gr6j(
         if ar > 7. {
             exp_flow = states[2] + x6 / ar.exp();
         } else if ar < -7. {
-            exp_flow = x6 / ar.exp();
+            exp_flow = x6 * ar.exp();
         } else {
             exp_flow = x6 * (ar.exp() + 1.).ln();
         }
