@@ -95,7 +95,7 @@ jobs:
           pip install pytest
           pytest
 
-  release:
+  publish-pypi:
     name: Publish to Pypi
     runs-on: ubuntu-latest
     needs: [linux, windows, macos]
@@ -111,7 +111,7 @@ jobs:
           command: upload
           args: --skip-existing *
 
-  release-github:
+  publish-github:
     permissions:
       # Used to sign the release's artifacts with sigstore-python.
       id-token: write
@@ -125,7 +125,7 @@ jobs:
         with:
           name: wheels
       - name: Sigstore Sign
-        uses: sigstore/gh-action-sigstore-python@v1.1.0
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
         with:
           inputs: ./*.whl
           upload-signing-artifacts: true
