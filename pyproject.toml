@@ -1,6 +1,6 @@
 [project]
 name = "hydrogr"
-version = "1.1.0"
+version = "1.2.1"
 description = "Hydrogr is a Python package that implement GR hydrological models in Rust"
 authors = [ {name = "SimonDelmas", email = "delmas.simon@gmail.com"} ]
 license = {file = "LICENSE.txt"}
