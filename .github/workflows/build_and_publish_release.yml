@@ -1,4 +1,4 @@
-name: Publish Artifact
+name: Build and publish release
 
 on:
   release:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_and_test:
-    uses: ./.github/workflows/build_and_test.yml
+    uses: ./.github/workflows/build_all.yml
 
   publish-pypi:
     name: Publish to Pypi

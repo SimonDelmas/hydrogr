@@ -1,0 +1,41 @@
+name: Build and Test
+
+inputs:
+  python_version:
+    description: 'Python version'
+    required: true
+    default: '3.10'
+  target:
+    description: 'Target architecture'
+    required: true
+  test_target: 
+    description: 'Architecture for testing'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: Build wheels
+      uses: PyO3/maturin-action@v1
+      with:
+        target: ${{ inputs.target }}
+        args: --release --out dist --find-interpreter
+        manylinux: auto
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels
+        path: dist
+    - name: pytest
+      if: ${{ startsWith(inputs.target, inputs.test_target) }}
+      shell: bash
+      run: |
+        set -e
+        pip install hydrogr --find-links dist --force-reinstall
+        pip install pytest
+        pytest
+
