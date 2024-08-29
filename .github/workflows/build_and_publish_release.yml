@@ -37,8 +37,6 @@ jobs:
     needs: [build_and_test]
     steps:
       - uses: actions/download-artifact@v4
-        with:
-          name: wheels
       - name: Sigstore Sign
         uses: sigstore/gh-action-sigstore-python@v3.0.0
         with:
