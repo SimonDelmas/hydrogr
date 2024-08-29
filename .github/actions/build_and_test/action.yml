@@ -5,11 +5,8 @@ inputs:
     description: 'Python version'
     required: true
     default: '3.10'
-  target:
+  architecture:
     description: 'Target architecture'
-    required: true
-  test_target: 
-    description: 'Architecture for testing'
     required: true
 
 runs:
@@ -22,20 +19,20 @@ runs:
     - name: Build wheels
       uses: PyO3/maturin-action@v1
       with:
-        target: ${{ inputs.target }}
+        target: ${{ inputs.architecture }}
         args: --release --out dist --find-interpreter
         manylinux: auto
-    - name: Upload wheels
-      uses: actions/upload-artifact@v4
-      with:
-        name: my-package-${{ inputs.python_version }}-${{ inputs.target }}-${{ github.run_id }}-${{ github.job }}
-        path: dist
     - name: pytest
-      if: ${{ startsWith(inputs.target, inputs.test_target) }}
       shell: bash
       run: |
         set -e
         pip install hydrogr --find-links dist --force-reinstall
         pip install pytest
         pytest
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: hydrogr-${{ github.job }}-${{ inputs.architecture }}-${{ github.run_id }}
+        path: dist
+    
 

@@ -21,8 +21,7 @@ jobs:
         uses: ./.github/actions/build_and_test
         with:
           python_version: '3.11'
-          target: ${{ matrix.target }}
-          test_target: 'x86_64'
+          architecture: ${{ matrix.target }}
 
   build_for_windows:
     runs-on: windows-latest
@@ -35,8 +34,7 @@ jobs:
         uses: ./.github/actions/build_and_test
         with:
           python_version: '3.11'
-          target: ${{ matrix.target }}
-          test_target: 'x64'
+          architecture: ${{ matrix.target }}
 
   build_for_macos:
     runs-on: macos-latest
@@ -49,7 +47,6 @@ jobs:
         uses: ./.github/actions/build_and_test
         with:
           python_version: '3.11'
-          target: ${{ matrix.target }}
-          test_target: 'x64'
+          architecture: ${{ matrix.target }}
 
 
