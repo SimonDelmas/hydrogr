@@ -16,6 +16,7 @@ jobs:
       matrix:
         target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
     steps:
+      - uses: actions/checkout@v4
       - name: Run build and test
         uses: ./.github/actions/build_and_test
         with:
@@ -29,6 +30,7 @@ jobs:
       matrix:
         target: [x64]
     steps:
+      - uses: actions/checkout@v4
       - name: Run build and test
         uses: ./.github/actions/build_and_test
         with:
@@ -42,6 +44,7 @@ jobs:
       matrix:
         target: [x86_64, aarch64]
     steps:
+      - uses: actions/checkout@v4
       - name: Run build and test
         uses: ./.github/actions/build_and_test
         with:
