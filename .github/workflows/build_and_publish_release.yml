@@ -16,8 +16,6 @@ jobs:
     needs: [build_and_test]
     steps:
       - uses: actions/download-artifact@v4
-        with:
-          name: wheels
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
@@ -40,12 +38,12 @@ jobs:
       - name: Sigstore Sign
         uses: sigstore/gh-action-sigstore-python@v3.0.0
         with:
-          inputs: ./*.whl
+          inputs: ./*.zip
           upload-signing-artifacts: true
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            *.whl
+            *.zip
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           generate_release_notes: true
