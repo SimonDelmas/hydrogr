@@ -16,13 +16,16 @@ jobs:
     needs: [build_and_test]
     steps:
       - uses: actions/download-artifact@v4
+        with: 
+          path: dist
+          merge-multiple: true
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
-          args: --skip-existing *
+          args: --skip-existing ./dist/*.whl
 
   publish-github:
     permissions:
@@ -35,15 +38,18 @@ jobs:
     needs: [build_and_test]
     steps:
       - uses: actions/download-artifact@v4
+        with: 
+          path: dist
+          merge-multiple: true
       - name: Sigstore Sign
         uses: sigstore/gh-action-sigstore-python@v3.0.0
         with:
-          inputs: ./*.zip
+          inputs: ./dist/*.whl
           upload-signing-artifacts: true
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            *.zip
+            ./dist/*.whl
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           generate_release_notes: true
