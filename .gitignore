@@ -1,0 +1,8 @@
+# Python
+.pytest_cache
+.venv
+*pyc
+*pyd
+
+# Rust build
+target

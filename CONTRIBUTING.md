@@ -2,20 +2,8 @@
 
 ## Development stack
 
-### Python
-
-Install [python](https://www.python.org/) with pylauncher.
-
-### Pipx
-
-[Pipx](https://pypa.github.io/pipx/installation/) is a tool to install and run Python application in isolated environnements.
-It also ensure application are added to the PATH environnement variable to be use everywhere.
-To install pipx do :
-
-``` batch
-py.exe -m pip install --user pipx
-py.exe -m pipx ensurepath
-```
+We recommend using [uv](https://docs.astral.sh/uv/) as project manager.
+For compiling Rust code and produce a Python module you will need :
 
 ### Rust
 
@@ -23,16 +11,11 @@ Install a Rust compiler using [rustup](https://www.rust-lang.org/tools/install)
 
 ### Maturin
 
-Finally to install [Maturin](https://github.com/PyO3/maturin) do
+To install [Maturin](https://github.com/PyO3/maturin) simply do :
 
 ```batch
-pipx install maturin
+uv tool install maturin
 ```
-
-### (Optional) Rye
-
-We recommend using [Rye](https://rye.astral.sh/) to manage the project.
-Simply install the software by following the instruction and refers to the [rust module](https://rye.astral.sh/guide/rust/) section for building the project.
 
 ## Edit the project
 
@@ -42,57 +25,43 @@ Simply install the software by following the instruction and refers to the [rust
 git clone https://github.com/SimonDelmas/hydrogr.git
 ```
 
-### Using Rye
+### Initialize environment and Python module
 
-Simply do :
-
-```bash
-rye sync
-```
-
-You still can use `maturin.exe develop` for Rust module development.
-
-### Without Rye
-
-#### Virtual environment
-
-Create a virtual environnement. I recommend to create it into the project directory so Maturin can find it easily. For example :
+To initialize or update the Python virtual environment use :
 
 ```bash
-cd hydrogr
-py.exe -m venv .venv
+uv sync
 ```
 
-#### Development install
-
-Simply do :
+To produce the Python module from Rust code in development mode do :
 
 ```bash
-.venv\Scripts\python.exe -m pip install -e .[test]
-maturin.exe develop
+maturin.exe develop --uv
 ```
 
-This will install the python package and its dependencies in editable mode in the virtual env.
-`maturin.exe develop` will compile and deploy the Rust Python module in debug mode.
+It will produce a `_hydrogr` Python module located in the `python/hydrogr` directory and which is called by the different models.
 
 ### Edit Rust code
 
 - Write Rust function and unit tests
 - Test with `cargo test`
+- Produce Python module from Rust code with `maturin.exe develop --uv`
 
 ### Edit Python Code
 
 - Write Python code
-- Test with pytest : `.venv\Scripts\pytest.exe`
+- Test with pytest : `uv run pytest`
 
 ## Compiling
 
-If you are using *Rye* :
+```bash
+uv build
+```
 
-`rye build`
+Or alternatively :
 
-Else :
-
-`maturin.exe build --release --out dist --find-interpreter`
+```bash
+maturin.exe build --release --out dist --find-interpreter
+```
 
 Note that the github pipeline is configured to target multiple architecture when a new release is triggered.
