@@ -22,7 +22,7 @@ pub fn gr4j(
     let x3 = parameters[2];
     let x4 = parameters[3];
 
-    // Initialize hydrogramme :
+    // Initialize hydrograph :
     let nuh1 = x4.ceil() as usize;
     let nuh2 = (2.0 * x4).ceil() as usize;
     let mut o_uh1 = vec![0.; nuh1];

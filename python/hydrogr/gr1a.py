@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 
 class ModelGr1a(ModelGrInterface):
-    """GR1A model inspired by IRSTEA airGR package.
+    """GR1A model inspired by INRAE airGR package.
 
     Note:
         Model parameters :

@@ -7,7 +7,7 @@ from hydrogr._hydrogr import gr6j
 
 
 class ModelGr6j(ModelGrInterface):
-    """GR6J model inspired by IRSTEA airGR package.
+    """GR6J model inspired by INRAE airGR package.
 
     Note:
         Model parameters :
@@ -15,7 +15,7 @@ class ModelGr6j(ModelGrInterface):
             X2 : inter-catchment exchange coefficient [mm/d].
             X3 : routing store capacity [mm].
             X4 : unit hydrograph time constant [d].
-            X5 = intercatchment exchange threshold [-]
+            X5 = inter-catchment exchange threshold [-]
             X6 = coefficient for emptying exponential store [mm]
         Model states :
             production_store : Production store capacity [mm].
@@ -67,7 +67,7 @@ class ModelGr6j(ModelGrInterface):
                 X2 = inter-catchment exchange coefficient [mm/d],
                 X3 = routing store capacity [mm]
                 X4 = unit hydrograph time constant [d]
-                X5 = intercatchment exchange threshold [-]
+                X5 = inter-catchment exchange threshold [-]
                 X6 = coefficient for emptying exponential store [mm]
         """
         super().__init__(parameters)
@@ -88,7 +88,7 @@ class ModelGr6j(ModelGrInterface):
                 X2 = inter-catchment exchange coefficient [mm/d],
                 X3 = routing store capacity [mm]
                 X4 = unit hydrograph time constant [d]
-                X5 = intercatchment exchange threshold [-]
+                X5 = inter-catchment exchange threshold [-]
                 X6 = coefficient for emptying exponential store [mm]
         """
         for parameter_name in self.parameters_names:

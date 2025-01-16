@@ -25,7 +25,7 @@ pub fn gr6j(
     let x5 = parameters[4];
     let x6 = parameters[5];
 
-    // Initialize hydrogramme :
+    // Initialize hydrograph :
     let nuh1 = x4.ceil() as usize;
     let nuh2 = (2.0 * x4).ceil() as usize;
     let mut o_uh1 = vec![0.; nuh1];

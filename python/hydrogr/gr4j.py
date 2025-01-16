@@ -7,7 +7,7 @@ from pandas import DataFrame
 
 
 class ModelGr4j(ModelGrInterface):
-    """GR4J model inspired by IRSTEA airGR package.
+    """GR4J model inspired by INRAE airGR package.
 
     Note:
         Model parameters :

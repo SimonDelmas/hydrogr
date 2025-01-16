@@ -7,7 +7,7 @@ from hydrogr._hydrogr import gr2m
 
 
 class ModelGr2m(ModelGrInterface):
-    """GR2M model inspired by IRSTEA airGR package.
+    """GR2M model inspired by INRAE airGR package.
 
     Note:
         Model parameters :

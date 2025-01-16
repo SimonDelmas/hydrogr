@@ -7,7 +7,7 @@ from hydrogr._hydrogr import gr4h
 
 
 class ModelGr4h(ModelGrInterface):
-    """GR4H model inspired by IRSTEA airGR package.
+    """GR4H model inspired by INRAE airGR package.
 
     Note:
         Model parameters :
