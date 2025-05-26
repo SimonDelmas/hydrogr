@@ -19,14 +19,14 @@ class ModelGr5j(ModelGrInterface):
         Model states :
             production_store : Production store capacity [mm].
             routing_store : Routing store capacity [mm].
-            uh1 : unit hydrograph uh1 [m3/s].
-            uh2 : unit hydrograph uh2 [m3/s].
+            uh1 : unit hydrograph uh1 [-].
+            uh2 : unit hydrograph uh2 [-].
 
     Attributes:
         production_store (float) : Production store capacity [mm].
         routing_store (float) : Routing store capacity [mm].
-        uh1 (NDArray[Any]) : unit hydrograph uh1 [m3/s].
-        uh2 (NDArray[Any]) : unit hydrograph uh2 [m3/s].
+        uh1 (NDArray[Any]) : unit hydrograph uh1 [-].
+        uh2 (NDArray[Any]) : unit hydrograph uh2 [-].
         parameters (Dict[str, float]) : Parameters of the model.
 
     Args:
@@ -115,8 +115,8 @@ class ModelGr5j(ModelGrInterface):
             states (Dict[str, Any]): Dictionary that contains the model state :
                 production_store : Production store capacity [mm].
                 routing_store : Routing store capacity [mm].
-                uh1 : unit hydrograph uh1 [m3/s].
-                uh2 : unit hydrograph uh2 [m3/s].
+                uh1 : unit hydrograph uh1 [-].
+                uh2 : unit hydrograph uh2 [-].
         """
         for state_name in self.states_names:
             if state_name not in states:
@@ -155,8 +155,8 @@ class ModelGr5j(ModelGrInterface):
             Dict[str, Any]: With keys :
                 production_store : Production store capacity [mm].
                 routing_store : Routing store capacity [mm].
-                uh1 : unit hydrograph uh1 [m3/s].
-                uh2 : unit hydrograph uh2 [m3/s].
+                uh1 : unit hydrograph uh1 [-].
+                uh2 : unit hydrograph uh2 [-].
         """
         states = {
             "production_store": self.production_store,
@@ -173,7 +173,7 @@ class ModelGr5j(ModelGrInterface):
             inputs (DataFrame): Input data handler, should contain precipitation and evapotranspiration time series.
 
         Returns:
-            DataFrame: Dataframe that contains the flow time series [m3/s].
+            DataFrame: Dataframe that contains the flow time series [mm/d].
         """
         parameters = [
             self.parameters["X1"],

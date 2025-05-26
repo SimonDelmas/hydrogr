@@ -132,7 +132,7 @@ class ModelGr2m(ModelGrInterface):
             inputs (DataFrame): Input data handler, should contain precipitation and evapotranspiration time series.
 
         Returns:
-            DataFrame: Dataframe that contains the flow time series [m3/s].
+            DataFrame: Dataframe that contains the flow time series [mm/month].
         """
         parameters = [self.parameters["X1"], self.parameters["X2"]]
         precipitation = inputs["precipitation"].values.astype(float)
