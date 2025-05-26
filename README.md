@@ -7,8 +7,16 @@
 
 # HydroGR ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
 
-Hydrogr is a python language software package for hydrological modelling, that implement several conceptual rainfall-runoff models (GR4H, GR4J, GR5J, GR6J, GR2M, GR1A).
-It is inspired from INRAE R language package: [airGR](https://cran.r-project.org/web/packages/airGR/index.html).
+HydroGR is a Python package for hydrological modeling that implements several conceptual rainfall-runoff models:
+
+- **GR4H**: 4-parameter hourly model
+- **GR4J**: 4-parameter daily model  
+- **GR5J**: 5-parameter daily model
+- **GR6J**: 6-parameter daily model
+- **GR2M**: 2-parameter monthly model
+- **GR1A**: 1-parameter annual model
+
+It is inspired by the INRAE R language package: [airGR](https://cran.r-project.org/web/packages/airGR/index.html).
 
 ## Getting Started
 
@@ -29,12 +37,12 @@ print(hydrogr.__version__)
 
 ### Examples
 
-Examples based on the examples in the airGR package are available in the [example folder](https://github.com/SimonDelmas/hydrogr/tree/master/example) for the different models.
+Examples based on the examples in the airGR package are available in the [example folder](./example) for the different models.
 
-An example for calibrating models using [spotpy](https://github.com/thouska/spotpy) is also available.
+An example for calibrating models using [spotpy](https://github.com/thouska/spotpy) is also available in the [calibrating_gr4j.ipynb](./example/calibrating_gr4j.ipynb) notebook.
 
 ![gr4h](https://github.com/SimonDelmas/hydrogr/assets/28869386/3c980461-42d7-4de9-bae7-6bb127c978f1)
 
 ## License
 
-This project is licensed under the GLP-2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the GPL-2.0 License - see the [LICENSE.txt](./LICENSE.txt) file for details.
