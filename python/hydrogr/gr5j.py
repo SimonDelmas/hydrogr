@@ -15,7 +15,7 @@ class ModelGr5j(ModelGrInterface):
             X2 : inter-catchment exchange coefficient [mm/d].
             X3 : routing store capacity [mm].
             X4 : unit hydrograph time constant [d].
-            X5 = inter-catchment exchange threshold [-]
+            X5 : inter-catchment exchange threshold [-].
         Model states :
             production_store : Production store capacity [mm].
             routing_store : Routing store capacity [mm].

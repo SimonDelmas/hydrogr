@@ -56,7 +56,7 @@ class ModelGr4j(ModelGrInterface):
                 X1 = production store capacity [mm],
                 X2 = inter-catchment exchange coefficient [mm/d],
                 X3 = routing store capacity [mm]
-                X4 = unit hydrograph time constant [h]
+                X4 = unit hydrograph time constant [d]
         """
         super().__init__(parameters)
 

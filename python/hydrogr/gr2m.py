@@ -11,8 +11,8 @@ class ModelGr2m(ModelGrInterface):
 
     Note:
         Model parameters :
-            X1 = production store capacity [mm],
-            X2 = groundwater exchange coefficient [-]
+            X1 : production store capacity [mm].
+            X2 : groundwater exchange coefficient [-].
         Model states :
             production_store : Production store capacity [mm].
             routing_store : Routing store capacity [mm].
@@ -43,6 +43,13 @@ class ModelGr2m(ModelGrInterface):
     states_names = ["production_store", "routing_store"]
 
     def __init__(self, parameters: Dict[str, float]):
+        """Constructs an ModelGr2m object.
+
+        Args:
+            parameters (Dict[str, float]): Value of the parameters require by the model:
+                X1 = production store capacity [mm],
+                X2 = groundwater exchange coefficient [-]
+        """
         super().__init__(parameters)
 
         # Default states values
@@ -73,7 +80,7 @@ class ModelGr2m(ModelGrInterface):
         if self.parameters["X2"] < threshold_x1x2:
             self.parameters["X2"] = threshold_x1x2
             warnings.warn(
-                "Production reservoir level under threshold {} [mm]. Will replaced by the threshold.".format(
+                "Groundwater exchange coefficient under threshold {} [-]. Will replaced by the threshold.".format(
                     threshold_x1x2
                 )
             )

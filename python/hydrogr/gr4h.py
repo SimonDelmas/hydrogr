@@ -100,7 +100,7 @@ class ModelGr4h(ModelGrInterface):
         if self.parameters["X4"] < threshold_x4:
             self.parameters["X4"] = threshold_x4
             warnings.warn(
-                "Unit hydrograph time constant under threshold {} [d]. Will replaced by the threshold.".format(
+                "Unit hydrograph time constant under threshold {} [h]. Will replaced by the threshold.".format(
                     threshold_x4
                 )
             )
