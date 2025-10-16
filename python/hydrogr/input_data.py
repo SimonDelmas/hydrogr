@@ -138,21 +138,12 @@ class InputDataHandler(object):
     def __check_for_na_in_inputs(self, column_name):
         detected_na = self.data[column_name].isnull().values.any()
         if detected_na:
-            warnings.warn(
-                "NA detected in {} time series! ({})".format(
-                    InputDataHandler.data_names[column_name], column_name
-                )
-            )
+            warnings.warn(f"NA detected in {column_name} series!")
 
     def __check_for_negative_values_in_inputs(self, column_name):
         detected_neg = (self.data[column_name] < 0.0).any()
         if detected_neg:
-            warnings.warn(
-                "Negative values detected in {} time series! ({})".format(
-                    InputDataHandler.data_names[column_name], column_name
-                )
-            )
-
+            warnings.warn(f"Negative values detected in {column_name} series!")
 
 class InputRequirements(object):
     """
