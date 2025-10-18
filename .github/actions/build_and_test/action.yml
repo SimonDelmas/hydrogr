@@ -16,6 +16,7 @@ runs:
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python_version }}
+        architecture: ${{ inputs.architecture }}
     - name: Build wheels
       uses: PyO3/maturin-action@v1
       with:
@@ -28,7 +29,6 @@ runs:
         set -e
         pip install pytest
         pip install hydrogr --find-links dist --force-reinstall
-        pip install --find-links dist --no-index --force-reinstall hydrogr --no-deps
         pytest
     - name: Upload wheels
       uses: actions/upload-artifact@v4
