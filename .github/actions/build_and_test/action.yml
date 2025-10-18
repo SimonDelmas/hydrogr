@@ -5,6 +5,9 @@ inputs:
     description: 'Python version'
     required: true
     default: '3.10'
+  python_archi:
+    description: 'Python architecture that match the target'
+    required: true
   architecture:
     description: 'Target architecture'
     required: true
@@ -16,7 +19,7 @@ runs:
     - uses: actions/setup-python@v6
       with:
         python-version: ${{ inputs.python_version }}
-        architecture: ${{ inputs.architecture == 'x86' && 'x86' || (inputs.architecture == 'x64' || inputs.architecture == 'x86_64' ? 'x64' : '') }}
+        architecture: ${{ inputs.python_archi }}
     - name: Build wheels
       uses: PyO3/maturin-action@v1
       with:
