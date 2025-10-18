@@ -31,7 +31,7 @@ runs:
       run: |
         set -e
         python -m pip install pytest
-        python -m pip install hydrogr --find-links dist --force-reinstall
+        python -m pip install dist/hydrogr-*.whl
         python -m pytest
     - name: Upload wheels
       uses: actions/upload-artifact@v4
