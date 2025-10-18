@@ -1,5 +1,5 @@
 [![PyPi version](https://img.shields.io/pypi/v/hydrogr.svg)](https://pypi.python.org/pypi/hydrogr/)
-[![](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SimonDelmas/hydrogr/build_all.yml)
 ![GitHub issues](https://img.shields.io/github/issues/SimonDelmas/hydrogr)
 ![GitHub License](https://img.shields.io/github/license/SimonDelmas/hydrogr)
