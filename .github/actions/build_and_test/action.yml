@@ -5,9 +5,6 @@ inputs:
     description: 'Python version'
     required: true
     default: '3.10'
-  python_archi:
-    description: 'Python architecture that match the target'
-    required: true
   architecture:
     description: 'Target architecture'
     required: true
@@ -39,7 +36,7 @@ runs:
     - name: Upload wheels
       uses: actions/upload-artifact@v4
       with:
-        name: hydrogr-${{ github.job }}-${{ inputs.architecture }}-${{ github.run_id }}
+        name: hydrogr-${{ github.job }}-${{ inputs.python_version }}-${{ inputs.architecture }}-${{ github.run_id }}
         path: dist
     
 
