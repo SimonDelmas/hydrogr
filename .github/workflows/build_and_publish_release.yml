@@ -27,29 +27,29 @@ jobs:
           command: upload
           args: --skip-existing ./dist/*.whl
 
-  publish-github:
-    permissions:
-      # Used to sign the release's artifacts with sigstore-python.
-      id-token: write
-      # Used to upload release artifacts.
-      contents: write
-    name: Publish to GitHub releases
-    runs-on: ubuntu-latest
-    needs: [build_and_test]
-    steps:
-      - uses: actions/download-artifact@v4
-        with: 
-          path: dist
-          merge-multiple: true
-      - name: Sigstore Sign
-        uses: sigstore/gh-action-sigstore-python@v3.0.0
-        with:
-          inputs: ./dist/*.whl
-          upload-signing-artifacts: true
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            ./dist/*.whl
-          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
-          generate_release_notes: true
+  # publish-github:
+  #   permissions:
+  #     # Used to sign the release's artifacts with sigstore-python.
+  #     id-token: write
+  #     # Used to upload release artifacts.
+  #     contents: write
+  #   name: Publish to GitHub releases
+  #   runs-on: ubuntu-latest
+  #   needs: [build_and_test]
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       with: 
+  #         path: dist
+  #         merge-multiple: true
+  #     - name: Sigstore Sign
+  #       uses: sigstore/gh-action-sigstore-python@v3.0.0
+  #       with:
+  #         inputs: ./dist/*.whl
+  #         upload-signing-artifacts: true
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         files: |
+  #           ./dist/*.whl
+  #         prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+  #         generate_release_notes: true
