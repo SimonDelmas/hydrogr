@@ -14,56 +14,43 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - target: x86_64
-            py_arch: x64
-          - target: x86
-            py_arch: x86
-        # matrix:
-        # target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
+        python_version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+        target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
     steps:
       - uses: actions/checkout@v4
       - name: Run build and test
         uses: ./.github/actions/build_and_test
         with:
-          python_version: '3.11'
-          python_archi: ${{ matrix.py_arch }}
+          python_version: ${{ matrix.python_version }}
           architecture: ${{ matrix.target }}
 
   build_for_windows:
     runs-on: windows-latest
     strategy:
       matrix:
-        include:
-        - target: x64
-          py_arch: x64
-        - target: x86
-          py_arch: x86
+        python_version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+        target: [x64]
     steps:
       - uses: actions/checkout@v4
       - name: Run build and test
         uses: ./.github/actions/build_and_test
         with:
-          python_version: '3.11'
-          python_archi: ${{ matrix.py_arch }}
+          python_version: ${{ matrix.python_version }}
           architecture: ${{ matrix.target }}
+          run_tests: 'true'
 
   build_for_macos:
     runs-on: macos-latest
     strategy:
       matrix:
-        include:
-          - target: x86_64
-            py_arch: x64
-          - target: aarch64
-            py_arch: aarch64
+        python_version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+        target: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v4
       - name: Run build and test
         uses: ./.github/actions/build_and_test
         with:
-          python_version: '3.11'
-          python_archi: ${{ matrix.py_arch }}
+          python_version: ${{ matrix.python_version }}
           architecture: ${{ matrix.target }}
 
 
