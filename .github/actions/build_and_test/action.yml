@@ -28,7 +28,7 @@ runs:
         set -e
         pip install pytest
         pip install hydrogr --find-links dist --force-reinstall
-        pip install --find-links dist __no-index --force-reinstall hydrogr --no-deps
+        pip install --find-links dist --no-index --force-reinstall hydrogr --no-deps
         pytest
     - name: Upload wheels
       uses: actions/upload-artifact@v4
