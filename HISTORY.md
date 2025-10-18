@@ -1,5 +1,9 @@
 # History
 
+## 1.2.2 (2025-10)
+
+Fix error in input data handler warning message that used an obsolete variable. Thanks to Adrian Bishop for reporting.
+
 ## 1.2.1 (2024-08)
 
 Fix GR6J exponential store flow (issue #2), thanks to @Dr-Jamie-Brown
