@@ -23,7 +23,7 @@ runs:
       uses: PyO3/maturin-action@v1
       with:
         target: ${{ inputs.architecture }}
-        args: --release --out dist --find-interpreter
+        args: --release -i python${{ inputs.python_version }} --out dist --find-interpreter
         manylinux: auto
     - name: pytest
       if: ${{ inputs.run_tests == 'true' }}
