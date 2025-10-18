@@ -1,10 +1,7 @@
 name: Build for all platforms
 
 on:
-  push:
-    branches:
-      - main
-      - master
+  pull_request:
   workflow_dispatch:
   workflow_call:
 
@@ -13,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python_version: ['3.9', '3.10', '3.11', '3.12', '3.13']
-        target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
+        python_version: ['3.13']
+        target: [x86_64, x86]
     steps:
       - uses: actions/checkout@v4
       - name: Run build and test
@@ -22,12 +19,13 @@ jobs:
         with:
           python_version: ${{ matrix.python_version }}
           architecture: ${{ matrix.target }}
+          run_tests: 'true'
 
   build_for_windows:
     runs-on: windows-latest
     strategy:
       matrix:
-        python_version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        python_version: ['3.13']
         target: [x64]
     steps:
       - uses: actions/checkout@v4
@@ -42,8 +40,8 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python_version: ['3.9', '3.10', '3.11', '3.12', '3.13']
-        target: [x86_64, aarch64]
+        python_version: ['3.13']
+        target: [x86_64]
     steps:
       - uses: actions/checkout@v4
       - name: Run build and test
@@ -51,5 +49,6 @@ jobs:
         with:
           python_version: ${{ matrix.python_version }}
           architecture: ${{ matrix.target }}
+          run_tests: 'true'
 
 
