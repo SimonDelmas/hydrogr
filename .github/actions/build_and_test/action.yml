@@ -8,31 +8,35 @@ inputs:
   architecture:
     description: 'Target architecture'
     required: true
+  run_tests:
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: ${{ inputs.python_version }}
     - name: Build wheels
       uses: PyO3/maturin-action@v1
       with:
         target: ${{ inputs.architecture }}
-        args: --release --out dist --find-interpreter
+        args: --release -i python${{ inputs.python_version }} --out dist
         manylinux: auto
     - name: pytest
+      if: ${{ inputs.run_tests == 'true' }}
       shell: bash
       run: |
         set -e
-        pip install hydrogr --find-links dist --force-reinstall
-        pip install pytest
-        pytest
+        python -m pip install pytest
+        python -m pip install hydrogr --find-links dist --force-reinstall
+        python -m pytest
     - name: Upload wheels
       uses: actions/upload-artifact@v4
       with:
-        name: hydrogr-${{ github.job }}-${{ inputs.architecture }}-${{ github.run_id }}
+        name: hydrogr-${{ github.job }}-${{ inputs.python_version }}-${{ inputs.architecture }}-${{ github.run_id }}
         path: dist
     
 

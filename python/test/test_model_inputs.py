@@ -6,6 +6,18 @@ import datetime
 def test_input_daily_data_datetime_index(dataset_l0123001):
     _ = InputDataHandler(ModelGr4j, dataset_l0123001)
 
+    with pytest.warns(UserWarning) as record:
+        dataset_l0123001.loc[dataset_l0123001.index[0], "precipitation"] = -1
+        _ = InputDataHandler(ModelGr4j, dataset_l0123001)
+        assert len(record) == 1
+        assert "Negative values" in str(record[0].message)
+        
+    with pytest.warns(UserWarning) as record:
+        dataset_l0123001.loc[dataset_l0123001.index[0], "precipitation"] = float("nan")
+        _ = InputDataHandler(ModelGr4j, dataset_l0123001)
+        assert len(record) == 1
+        assert "NA detected" in str(record[0].message)
+
 
 @pytest.mark.filterwarnings("ignore:The selected start date")
 @pytest.mark.filterwarnings("ignore:The selected end date")
