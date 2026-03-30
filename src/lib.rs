@@ -1,3 +1,4 @@
+use std::convert::TryInto;
 use numpy::{IntoPyArray, PyArray1, PyReadonlyArray1};
 use pyo3::prelude::*;
 use pyo3::types::PyList;
@@ -149,13 +150,16 @@ fn gr4h_py<'py>(
     &'py PyArray1<f64>,
 ) {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
+    let a_param: [f64; 4] = v_param
+        .try_into()
+        .expect("ValueError: GR4H model requires exactly 4 parameters");
 
     let n_rainfall = rainfall.as_array(); // Convert to ndarray type
     let n_evap = evapotranspiration.as_array();
     let n_states = states.as_array();
     let n_uh1 = uh1.as_array();
     let n_uh2 = uh2.as_array();
-    let (states, uh1, uh2, flow) = gr4h::gr4h(&v_param, n_rainfall, n_evap, n_states, n_uh1, n_uh2);
+    let (states, uh1, uh2, flow) = gr4h::gr4h(&a_param, n_rainfall, n_evap, n_states, n_uh1, n_uh2);
     (
         states.into_pyarray(py),
         uh1.into_pyarray(py),
