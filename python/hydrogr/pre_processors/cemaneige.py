@@ -1,6 +1,8 @@
 from typing import Dict, Optional, Union
+
 import numpy as np
 from pandas import DataFrame
+
 from hydrogr._hydrogr import cemaneige as cemaneige_rust
 
 
@@ -50,7 +52,7 @@ class CemaNeige:
         """Initialize CEMANEIGE model.
 
         Args:
-            parameters (Dict[str, float]): Parameter dict. Keys 'X1' and 'X2' are always required. 
+            parameters (Dict[str, float]): Parameter dict. Keys 'X1' and 'X2' are always required.
                                            When hysteresis=True, also requires 'X3' (>0 [mm]) and 'X4' (in (0, 1]).
             hysteresis (bool, optional): Use the hysteresis formulation (Riboust et al. 2019). Defaults to False.
             hypso_data (Optional[np.ndarray], optional): Hypsometric curve of the catchment. elevations [m] at
@@ -86,7 +88,6 @@ class CemaNeige:
             self.snowpack_thermal_state = np.zeros(self.n_bands)
             self.melt_threshold = np.zeros(self.n_bands)
             self.local_max_snowpack = np.zeros(self.n_bands)
-
 
     # Parameter / state management
     # ----------------------------
@@ -128,7 +129,7 @@ class CemaNeige:
         """_summary_
 
         Args:
-            parameters (Dict[str, float]): Parameter dict. Keys 'X1' and 'X2' are always required. 
+            parameters (Dict[str, float]): Parameter dict. Keys 'X1' and 'X2' are always required.
                                            X1 (float): Snowpack thermal coefficient [0-1].
                                            X2 (float): Melt coefficient [mm/(°C·timestep)].
                                            When hysteresis=True, also requires 'X3' and 'X4'.
