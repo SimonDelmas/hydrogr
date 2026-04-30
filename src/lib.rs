@@ -2,6 +2,7 @@ use numpy::{IntoPyArray, PyArray1, PyReadonlyArray1};
 use pyo3::prelude::*;
 use pyo3::types::PyList;
 
+mod cemaneige;
 mod gr1a;
 mod gr2m;
 mod gr4h;
@@ -9,6 +10,36 @@ mod gr4j;
 mod gr5j;
 mod gr6j;
 mod s_curves;
+
+#[pyfunction]
+#[pyo3(name = "cemaneige")]
+fn cemaneige_py<'py>(
+    py: Python<'py>,
+    parameters: &PyList,
+    inputs_precip: PyReadonlyArray1<f64>,
+    inputs_frac_solid_precip: PyReadonlyArray1<f64>,
+    inputs_temp: PyReadonlyArray1<f64>,
+    mean_an_solid_precip: f64,
+    state_start: PyReadonlyArray1<f64>,
+    is_hyst: bool,
+) -> (&'py PyArray1<f64>, &'py PyArray1<f64>) {
+    let v_param = parameters.extract::<Vec<f64>>().unwrap();
+    let n_precip = inputs_precip.as_array();
+    let n_frac_solid = inputs_frac_solid_precip.as_array();
+    let n_temp = inputs_temp.as_array();
+    let n_state_start = state_start.as_array();
+
+    let (state_end, flow) = cemaneige::cemaneige(
+        &v_param,
+        n_precip,
+        n_frac_solid,
+        n_temp,
+        mean_an_solid_precip,
+        n_state_start,
+        is_hyst,
+    );
+    (state_end.into_pyarray(py), flow.into_pyarray(py))
+}
 
 #[pyfunction]
 #[pyo3(name = "gr1a")]
@@ -167,6 +198,7 @@ fn gr4h_py<'py>(
 /// A Python module implemented in Rust.
 #[pymodule]
 fn _hydrogr(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(cemaneige_py, m)?)?;
     m.add_function(wrap_pyfunction!(gr1a_py, m)?)?;
     m.add_function(wrap_pyfunction!(gr2m_py, m)?)?;
     m.add_function(wrap_pyfunction!(gr4j_py, m)?)?;
