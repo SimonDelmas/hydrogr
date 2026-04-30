@@ -1,4 +1,4 @@
-__version__ = "1.2.2"
+__version__ = "1.2.1"
 
 from hydrogr.input_data import InputDataHandler
 from hydrogr.gr1a import ModelGr1a
@@ -7,7 +7,7 @@ from hydrogr.gr4j import ModelGr4j
 from hydrogr.gr5j import ModelGr5j
 from hydrogr.gr6j import ModelGr6j
 from hydrogr.gr4h import ModelGr4h
-
+from hydrogr.pre_processors import CemaNeige
 
 __all__ = [
     InputDataHandler,
@@ -17,4 +17,5 @@ __all__ = [
     ModelGr5j,
     ModelGr6j,
     ModelGr4h,
+    CemaNeige,
 ]
