@@ -1,7 +1,9 @@
-from typing import Dict, Any
-from hydrogr.model_interface import ModelGrInterface
-from hydrogr._hydrogr import gr1a
+from typing import Any, Dict
+
 from pandas import DataFrame
+
+from hydrogr._hydrogr import gr1a
+from hydrogr.model_interface import ModelGrInterface
 
 
 class ModelGr1a(ModelGrInterface):

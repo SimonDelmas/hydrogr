@@ -1,8 +1,9 @@
-import pytest
 import datetime
-from hydrogr.input_data import InputDataHandler
+
+import pytest
 from hydrogr.gr5j import ModelGr5j
-from numpy import sqrt, mean
+from hydrogr.input_data import InputDataHandler
+from numpy import mean, sqrt
 
 
 def test_model_gr5j_run(dataset_l0123001):
@@ -11,7 +12,7 @@ def test_model_gr5j_run(dataset_l0123001):
         "X2": 1.027,
         "X3": 90.017,
         "X4": 2.198,
-        "X5": 0.434
+        "X5": 0.434,
     }
     air_gr_rmse = 0.8072707
 
@@ -28,6 +29,8 @@ def test_model_gr5j_run(dataset_l0123001):
     filtered_input = inputs.data[inputs.data.index >= start_date]
     filtered_output = outputs[outputs.index >= start_date]
 
-    rmse = sqrt(mean((filtered_output['flow'] - filtered_input['flow_mm'].values) ** 2.0))
+    rmse = sqrt(
+        mean((filtered_output["flow"] - filtered_input["flow_mm"].values) ** 2.0)
+    )
 
     assert pytest.approx(rmse) == air_gr_rmse

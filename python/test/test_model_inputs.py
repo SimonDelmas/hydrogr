@@ -1,7 +1,9 @@
-import pytest
-from hydrogr.input_data import InputDataHandler
-from hydrogr.gr4j import ModelGr4j
 import datetime
+
+import pytest
+from hydrogr.gr4j import ModelGr4j
+from hydrogr.input_data import InputDataHandler
+
 
 def test_input_daily_data_datetime_index(dataset_l0123001):
     _ = InputDataHandler(ModelGr4j, dataset_l0123001)
@@ -11,7 +13,7 @@ def test_input_daily_data_datetime_index(dataset_l0123001):
         _ = InputDataHandler(ModelGr4j, dataset_l0123001)
         assert len(record) == 1
         assert "Negative values" in str(record[0].message)
-        
+
     with pytest.warns(UserWarning) as record:
         dataset_l0123001.loc[dataset_l0123001.index[0], "precipitation"] = float("nan")
         _ = InputDataHandler(ModelGr4j, dataset_l0123001)

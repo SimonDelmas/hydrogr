@@ -1,7 +1,8 @@
 import warnings
+from datetime import datetime
+
 import pandas as pd
 import pandas.api.types as ptypes
-from datetime import datetime
 
 """
 Todo:

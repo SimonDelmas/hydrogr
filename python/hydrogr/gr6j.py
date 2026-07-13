@@ -1,9 +1,11 @@
-from typing import Dict, Any
 import warnings
+from typing import Any, Dict
+
 import numpy as np
 from pandas import DataFrame
-from hydrogr.model_interface import ModelGrInterface
+
 from hydrogr._hydrogr import gr6j
+from hydrogr.model_interface import ModelGrInterface
 
 
 class ModelGr6j(ModelGrInterface):

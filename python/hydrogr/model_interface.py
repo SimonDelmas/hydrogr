@@ -1,6 +1,8 @@
-from typing import Dict, Any
 import abc
+from typing import Any, Dict
+
 from pandas import DataFrame
+
 from hydrogr.input_data import InputDataHandler, InputRequirements
 
 

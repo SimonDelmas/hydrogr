@@ -1,17 +1,13 @@
-import pytest
 import datetime
-from hydrogr.input_data import InputDataHandler
+
+import pytest
 from hydrogr.gr4j import ModelGr4j
-from numpy import sqrt, mean
+from hydrogr.input_data import InputDataHandler
+from numpy import mean, sqrt
 
 
 def test_model_gr4j_run(dataset_l0123001):
-    air_gr_parameters = {
-        "X1": 257.238,
-        "X2": 1.012,
-        "X3": 88.235,
-        "X4": 2.208
-    }
+    air_gr_parameters = {"X1": 257.238, "X2": 1.012, "X3": 88.235, "X4": 2.208}
     air_gr_rmse = 0.7852326
 
     # Prepare inputs :
@@ -26,41 +22,41 @@ def test_model_gr4j_run(dataset_l0123001):
     start_states = model.get_states()
     assert start_states["production_store"] == 0.3
     assert start_states["routing_store"] == 0.5
-    
+
     outputs = model.run(inputs.data)
-    
+
     # Check the results :
     filtered_input = inputs.data[inputs.data.index >= start_date]
     filtered_output = outputs[outputs.index >= start_date]
-    rmse = sqrt(mean((filtered_output['flow'] - filtered_input['flow_mm'].values) ** 2.0))
+    rmse = sqrt(
+        mean((filtered_output["flow"] - filtered_input["flow_mm"].values) ** 2.0)
+    )
     assert pytest.approx(rmse) == air_gr_rmse
-    
+
     end_states = model.get_states()
     assert end_states["production_store"] == 0.7328441749918599
     assert end_states["routing_store"] == 0.553881305675591
-    
+
     # Test set state :
     model.set_states(start_states)
     assert start_states["production_store"] == 0.3
     assert start_states["routing_store"] == 0.5
-    
+
 
 def test_model_gr4j_incorrect_data(dataset_l0123001):
-    data = dataset_l0123001.rename(columns={'precipitation': 'wrong_name'})
-    
+    data = dataset_l0123001.rename(columns={"precipitation": "wrong_name"})
+
     start_date = datetime.datetime(1989, 1, 1, 0, 0)
     end_date = datetime.datetime(1999, 12, 31, 0, 0)
     mask = (data.index >= start_date) & (data.index <= end_date)
     data = data.loc[mask]
-    
-    parameters = {
-        "X1": 257.238,
-        "X2": 1.012,
-        "X3": 88.235,
-        "X4": 2.208
-    }
+
+    parameters = {"X1": 257.238, "X2": 1.012, "X3": 88.235, "X4": 2.208}
     model = ModelGr4j(parameters)
     with pytest.raises(Exception) as e:
         _ = model.run(data)
-        
-    assert str(e.value) == "Input data should contains \"precipitation\" data! Keyword \"precipitation\" not found."
+
+    assert (
+        str(e.value)
+        == 'Input data should contains "precipitation" data! Keyword "precipitation" not found.'
+    )
