@@ -14,10 +14,10 @@ mod s_curves;
 #[pyo3(name = "gr1a")]
 fn gr1a_py<'py>(
     py: Python<'py>,
-    parameters: &PyList,
+    parameters: &Bound<'py, PyList>,
     rainfall: PyReadonlyArray1<f64>,
     evapotranspiration: PyReadonlyArray1<f64>,
-) -> &'py PyArray1<f64> {
+) -> Bound<'py, PyArray1<f64>> {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
     let n_rainfall = rainfall.as_array();
     let n_evap = evapotranspiration.as_array();
@@ -30,11 +30,11 @@ fn gr1a_py<'py>(
 #[pyo3(name = "gr2m")]
 fn gr2m_py<'py>(
     py: Python<'py>,
-    parameters: &PyList,
+    parameters: &Bound<'py, PyList>,
     rainfall: PyReadonlyArray1<f64>,
     evapotranspiration: PyReadonlyArray1<f64>,
     states: PyReadonlyArray1<f64>,
-) -> (&'py PyArray1<f64>, &'py PyArray1<f64>) {
+) -> (Bound<'py, PyArray1<f64>>, Bound<'py, PyArray1<f64>>) {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
     let n_rainfall = rainfall.as_array(); // Convert to ndarray type
     let n_evap = evapotranspiration.as_array();
@@ -48,17 +48,17 @@ fn gr2m_py<'py>(
 #[pyo3(name = "gr4j")]
 fn gr4j_py<'py>(
     py: Python<'py>,
-    parameters: &PyList,
+    parameters: &Bound<'py, PyList>,
     rainfall: PyReadonlyArray1<f64>,
     evapotranspiration: PyReadonlyArray1<f64>,
     states: PyReadonlyArray1<f64>,
     uh1: PyReadonlyArray1<f64>,
     uh2: PyReadonlyArray1<f64>,
 ) -> (
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
 ) {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
     let n_rainfall = rainfall.as_array(); // Convert to ndarray type
@@ -80,12 +80,12 @@ fn gr4j_py<'py>(
 #[pyo3(name = "gr5j")]
 fn gr5j_py<'py>(
     py: Python<'py>,
-    parameters: &PyList,
+    parameters: &Bound<'py, PyList>,
     rainfall: PyReadonlyArray1<f64>,
     evapotranspiration: PyReadonlyArray1<f64>,
     states: PyReadonlyArray1<f64>,
     uh2: PyReadonlyArray1<f64>,
-) -> (&'py PyArray1<f64>, &'py PyArray1<f64>, &'py PyArray1<f64>) {
+) -> (Bound<'py, PyArray1<f64>>, Bound<'py, PyArray1<f64>>, Bound<'py, PyArray1<f64>>) {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
 
     let n_rainfall = rainfall.as_array(); // Convert to ndarray type
@@ -104,17 +104,17 @@ fn gr5j_py<'py>(
 #[pyo3(name = "gr6j")]
 fn gr6j_py<'py>(
     py: Python<'py>,
-    parameters: &PyList,
+    parameters: &Bound<'py, PyList>,
     rainfall: PyReadonlyArray1<f64>,
     evapotranspiration: PyReadonlyArray1<f64>,
     states: PyReadonlyArray1<f64>,
     uh1: PyReadonlyArray1<f64>,
     uh2: PyReadonlyArray1<f64>,
 ) -> (
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
 ) {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
 
@@ -136,17 +136,17 @@ fn gr6j_py<'py>(
 #[pyo3(name = "gr4h")]
 fn gr4h_py<'py>(
     py: Python<'py>,
-    parameters: &PyList,
+    parameters: &Bound<'py, PyList>,
     rainfall: PyReadonlyArray1<f64>,
     evapotranspiration: PyReadonlyArray1<f64>,
     states: PyReadonlyArray1<f64>,
     uh1: PyReadonlyArray1<f64>,
     uh2: PyReadonlyArray1<f64>,
 ) -> (
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
-    &'py PyArray1<f64>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
+    Bound<'py, PyArray1<f64>>,
 ) {
     let v_param = parameters.extract::<Vec<f64>>().unwrap();
 
@@ -166,7 +166,7 @@ fn gr4h_py<'py>(
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn _hydrogr(_py: Python, m: &PyModule) -> PyResult<()> {
+fn _hydrogr(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(gr1a_py, m)?)?;
     m.add_function(wrap_pyfunction!(gr2m_py, m)?)?;
     m.add_function(wrap_pyfunction!(gr4j_py, m)?)?;
